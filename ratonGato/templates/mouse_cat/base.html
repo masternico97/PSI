@@ -6,27 +6,41 @@
     {% endblock extra_css %}
 
     {% block extra_js %}
-    
+        <script src="https://kit.fontawesome.com/a076d05399.js"></script>
     {% endblock extra_js %}
 
     {% block extra_head %}
     
     {% endblock extra_head %}
-    <title>{% block title %}PSI 2019-2020: Example of application{% endblock %}</title>
+    <title>{% block title %}Fox & Hounds{% endblock %}</title>
 </head>
 
 <body id="body">
-    <div id="totalheader">
+    <nav>
         <div id="title">
-            {% block atitle %}<h1>Mouse vs. Cats application</h1>{% endblock atitle %}
+            {% block atitle %}
+                {% if request.user.is_authenticated %}
+                    Welcome <span class="username"></span>{{ request.user.username }}</span>!
+                    <a href="{% url 'logout' %}">Logout <i class='fas fa-sign-out-alt'></i></a>
+                {% endif %}    
+            {% endblock atitle %}
         </div>
 
-        <div id="header">
-            {% if request.user.is_authenticated %}
-                Welcome <span class="username">{{ request.user.username }}</span>!
-            {% endif %}
+        <div id="options">
+            <ul>
+                {% if request.user.is_authenticated %}
+                <li><a href="{% url 'create_game' %}">Create game</a></li>
+                <li><a href="{% url 'join_game' %}">Join game</a></li>
+                <li><a href="{% url 'select_game' %}">Select game</a></li>
+                <li><a href="{% url 'show_game' %}">Show selected game and play</a></li>
+                {% else %}
+                <li><a href="{% url 'login' %}">Login</a></li>
+                <li><a href="{% url 'signup' %}">Signup</a></li>
+                {% endif %}
+                <!-- <li><a href="{% url 'counter' %}">Counter</a></li> -->
+            </ul>
         </div>
-    </div>
+    </nav>
 
     <hr/>
 
@@ -36,6 +50,9 @@
     <hr/>
 
     {% block footer %}
+        <footer>
+            ©2019 Fox & Hounds | Mart&iacute;n Salinas & Nicol&aacute;s Serrano | All rights reserved
+        </footer>
     {% endblock footer %}
 </body>
 </html>
