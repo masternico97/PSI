@@ -19,6 +19,9 @@
     <nav>
         <div id="title">
             {% block atitle %}
+                <div id=logo_image>
+                    <img src="{% static 'images/logo.png' %}" alt="Logo"/>
+                </div>
                 {% if request.user.is_authenticated %}
                     Welcome <span class="username"></span>{{ request.user.username }}</span>!
                     <a href="{% url 'logout' %}">Logout <i class='fas fa-sign-out-alt'></i></a>

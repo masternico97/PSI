@@ -1,0 +1,11 @@
+#logo_image {
+    width: 60%;
+}
+
+footer {
+    position: fixed;
+    width: 100%;
+    bottom: 0%;
+    background-color: white;
+    text-align: center;
+}
