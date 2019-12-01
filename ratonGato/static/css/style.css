@@ -20,6 +20,34 @@ nav {
 
 #content {
     padding-left: 25px;
+    padding-right: 25px;
+}
+
+#content h1 {
+    text-align: center;
+    font-size: 250%
+}
+
+#content li {
+    list-style-type: none;
+    /* color: #8E8E8E */
+}
+
+#content li:before {
+    content: "~";
+    padding-right: 8px;
+    padding-left: 8px;
+    color: #F7F2B3
+}
+
+#content li a {
+    text-decoration: none;
+    color: #000000;
+}
+
+#content li a:hover {
+    text-decoration: none;
+    color: #8E8E8E;
 }
 
 #title {
@@ -35,6 +63,12 @@ nav {
     background: #F7F2B3;
 }
 
+#user_info {
+    background: #F7F2B3;
+    margin-left: 10%;
+    margin-right: 10%;
+}
+
 footer {
     position: fixed;
     width: 100%;
@@ -43,18 +77,56 @@ footer {
     text-align: center;
 }
 
-#options li {
+#menu {
+    padding: 0;
+}
+
+#menu li {
     list-style-type: none;
     background-color: #8E8E8E;
     padding-top: 10px;
     padding-bottom: 10px;
 }
 
-#options li a {
+#menu li a {
     color: white;
     text-decoration: none;
 }
 
-#options li:hover {
-    background-color: #606060;
+#return {
+    position: fixed;
+    right: 0%;
+    bottom: 0%;
+    margin: 50px;
 }
+
+#return a {
+    text-decoration: none;
+    border-radius: 15px;
+    padding: 10px;
+    background-color: #2C93B9;
+    color: 000000
+}
+
+#fox{
+    padding-top: 30%;
+    padding-bottom: 30%;
+    float: left;
+    width: 50%;
+}
+
+#hound{
+    padding-top: 30%;
+    padding-bottom: 30%;
+    float: right;
+    width: 50%;
+}
+
+#fox_image {
+    width: 100%;
+}
+
+#hound_image{
+    width: 100%;
+}
+
