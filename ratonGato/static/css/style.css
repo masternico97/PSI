@@ -1,5 +1,38 @@
+nav {
+    width: 30%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    background-color: #F234;
+    left: 0;
+    padding-top: 2%;
+}
+
+#contenido {
+    width: 70%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    right: 0;
+    padding-top: 2%;
+    background-color: #21C5B4;
+}
+
+#content {
+    padding-left: 25px;
+}
+
+#title {
+    width: 90%;
+    text-align: center;
+    background-color: 2C93B9;
+    padding-top: 20px;
+    margin-left: 5%;
+}
+
 #logo_image {
-    width: 60%;
+    width: 80%;
+    background: #F7F2B3;
 }
 
 footer {
@@ -8,4 +41,20 @@ footer {
     bottom: 0%;
     background-color: white;
     text-align: center;
+}
+
+#options li {
+    list-style-type: none;
+    background-color: #8E8E8E;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+#options li a {
+    color: white;
+    text-decoration: none;
+}
+
+#options li:hover {
+    background-color: #606060;
 }

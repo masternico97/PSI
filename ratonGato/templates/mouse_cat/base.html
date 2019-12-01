@@ -19,11 +19,12 @@
     <nav>
         <div id="title">
             {% block atitle %}
-                <div id=logo_image>
-                    <img src="{% static 'images/logo.png' %}" alt="Logo"/>
+                <div>
+                    <img id="logo_image" src="{% static 'images/logo.png' %}" alt="Logo"/>
                 </div>
                 {% if request.user.is_authenticated %}
                     Welcome <span class="username"></span>{{ request.user.username }}</span>!
+                    <br>
                     <a href="{% url 'logout' %}">Logout <i class='fas fa-sign-out-alt'></i></a>
                 {% endif %}    
             {% endblock atitle %}
@@ -45,12 +46,12 @@
         </div>
     </nav>
 
-    <hr/>
+    <div id="contenido">
 
     {% block content %}
     {% endblock content %}
 
-    <hr/>
+    </div>
 
     {% block footer %}
         <footer>
