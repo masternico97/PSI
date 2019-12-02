@@ -31,17 +31,20 @@ def anonymous_required(f):
 def errorHTTP(request, exception=None):
     context_dict = {}
     context_dict[constants.ERROR_MESSAGE_ID] = exception
+    context_dict["counter_global"] = Counter.objects.inc()
     return render(request, "mouse_cat/error.html", context_dict)
 
 
 # Create your views here.
 def index(request):
-    return render(request, "mouse_cat/index.html")
+    context_dict = {"counter_global": Counter.objects.get_current_value()}
+    return render(request, "mouse_cat/index.html", context_dict)
 
 
 @anonymous_required
 def login(request):
     context_dict = {"user_form": LoginForm(request.POST or None)}
+    context_dict["counter_global"] = Counter.objects.get_current_value()
     # The request is not a HTTP POST, so display the login form.
     if request.method == 'POST' and context_dict["user_form"].is_valid():
         data = context_dict["user_form"].clean()
@@ -65,12 +68,14 @@ def login(request):
 @login_required
 def logout(request):
     django_logout(request)
-    return render(request, "mouse_cat/logout.html")
+    context_dict = {"counter_global": Counter.objects.get_current_value()}
+    return render(request, "mouse_cat/logout.html", context_dict)
 
 
 @anonymous_required
 def signup(request):
     context_dict = {"user_form": SignupForm(request.POST or None)}
+    context_dict["counter_global"] = Counter.objects.get_current_value()
     # The request is not a HTTP POST, so display the login form.
     if request.method == 'POST' and context_dict["user_form"].is_valid():
         data = context_dict["user_form"].clean()
@@ -108,23 +113,11 @@ def signup(request):
     return render(request, "mouse_cat/signup.html", context_dict)
 
 
-def counter(request):
-    # set session variable
-    try:
-        request.session["counter"] += 1
-    except KeyError:
-        request.session["counter"] = 0
-        request.session["counter"] += 1
-
-    context_dict = {"counter_session": request.session["counter"],
-                    "counter_global": Counter.objects.inc()}
-    return render(request, "mouse_cat/counter.html", context_dict)
-
-
 @login_required(login_url='login')
 def create_game(request):
     context_dict = {"game": Game(cat_user=request.user)}
     context_dict["game"].save()
+    context_dict["counter_global"] = Counter.objects.get_current_value()
     return render(request, "mouse_cat/new_game.html", context_dict)
 
 
@@ -140,6 +133,7 @@ def join_game(request):
         context_dict["game"].save()
     else:
         context_dict = {"msg_error": "There is no available games"}
+    context_dict["counter_global"] = Counter.objects.get_current_value()
     return render(request, "mouse_cat/join_game.html", context_dict)
 
 
@@ -163,6 +157,7 @@ def select_game(request, game_id=None):
                 board[game.cat4] = 1
                 board[game.mouse] = -1
                 context_dict["board"] = board
+                context_dict["counter_global"] = Counter.objects.get_current_value()
 
                 return render(request, "mouse_cat/game.html", context_dict)
         retorno = errorHTTP(request, "Game does not exist")
@@ -177,6 +172,7 @@ def select_game(request, game_id=None):
         context_dict["as_mouse"] = (Game.objects.
                                     filter(mouse_user=request.user).
                                     filter(status=GameStatus.ACTIVE))
+        context_dict["counter_global"] = Counter.objects.get_current_value()
 
         return render(request, "mouse_cat/select_game.html", context_dict)
 
@@ -201,6 +197,7 @@ def show_game(request):
                 board[game.mouse] = -1
 
                 context_dict["board"] = board
+                context_dict["counter_global"] = Counter.objects.get_current_value()
 
                 return render(request, "mouse_cat/game.html", context_dict)
 
@@ -217,6 +214,7 @@ def move(request):
         return retorno
 
     context_dict = {"move_form": MoveForm(request.POST or None)}
+    context_dict["counter_global"] = Counter.objects.get_current_value()
     if request.method == 'POST' and context_dict["move_form"].is_valid():
 
         data = context_dict["move_form"].clean()
