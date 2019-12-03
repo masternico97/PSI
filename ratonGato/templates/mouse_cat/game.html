@@ -1,4 +1,5 @@
 {% extends "mouse_cat/base.html" %}
+{% load staticfiles %}
 
 {% block content %}
 <div id="content">
@@ -37,16 +38,20 @@
     </form>
 
     {% if board %}
-        <p>Board: {{ board }}</p>
         <table id="chess_board">
         {% for item in board %}
-            {% if forloop.counter0|divisibleby:8 %}<tr>{% endif %}
-            <td id="cell_{{ forloop.counter0}}"" style='width:20px;border:1px solid #000000;text-align:center;'>
-                {% if item ==  0 %}   x
-                {% elif item == 1 %}  &#9922;
-                {% else %}  &#9920; {% endif %}
+            {% if forloop.counter0|divisibleby:8 %}
+                <tr>
+            {% endif %}
+            <td id="cell_{{ forloop.countr0 }}" >
+                {% if item ==  0 %}
+                {% elif item == 1 %}<img id="duck_hunt" src="{% static 'images/duck_hunt.png' %}" alt="Hound"/>
+                {% else %}<img id="tails" src="{% static 'images/tails.png' %}" alt="Fox"/>
+                {% endif %}
             </td>
-            {% if forloop.counter|divisibleby:8 or forloop.last %}</tr>{% endif %}
+            {% if forloop.counter|divisibleby:8 or forloop.last %}
+                </tr>
+            {% endif %}
         {% endfor %}
         </table>
     {% endif %}
