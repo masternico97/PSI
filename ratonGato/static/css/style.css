@@ -1,3 +1,5 @@
+/* ------------- Navigation div ------------- */
+
 nav {
     width: 30%;
     height: 100%;
@@ -11,6 +13,8 @@ nav > p {
     margin-left: 5%;
 }
 
+/* ------------- Content div ------------- */
+
 #contenido {
     width: 70%;
     height: 100%;
@@ -18,7 +22,6 @@ nav > p {
     top: 0;
     right: 0;
     padding-top: 2%;
-    /* background-color: #21C5B4; */
 }
 
 #content {
@@ -26,14 +29,15 @@ nav > p {
     padding-right: 25px;
 }
 
+/* Content titles */
 #content h1 {
     text-align: center;
     font-size: 250%
 }
 
+/* List of available games to select */
 #content li {
     list-style-type: none;
-    /* color: #8E8E8E */
 }
 
 #content li:before {
@@ -53,6 +57,7 @@ nav > p {
     color: #8E8E8E;
 }
 
+/* Title square with logo */
 #title {
     width: 90%;
     text-align: center;
@@ -76,14 +81,7 @@ nav > p {
     color: #000000;
 }
 
-footer {
-    position: fixed;
-    width: 100%;
-    bottom: 0%;
-    background-color: white;
-    text-align: center;
-}
-
+/* List of options */
 #menu {
     padding: 0;
     margin-left: 5%;
@@ -109,6 +107,7 @@ footer {
     text-decoration: none;
 }
 
+/* 'Return to homepage' button */
 #return {
     position: fixed;
     right: 0%;
@@ -118,7 +117,7 @@ footer {
 
 #return_center {
     text-align: center;
-    margin: 50px;
+    margin: 100px;
 }
 
 #return a, #return_center a {
@@ -129,55 +128,12 @@ footer {
     color: 000000
 }
 
+/* Move form in game page */
 #move_form > .mouse, #move_form > .cat {
     margin-left: 0;
 }
 
-#content > .error {
-    margin-top: 10%;
-    text-align: center;
-    color: red;
-}
-
-#content > .error img {
-    width: 20px;
-    margin-left: 5px;
-    margin-right: 5px;
-}
-
-#content > .center {
-    margin-top: 10%;
-    text-align: center;
-}
-
-#content > p img {
-    width: 40px;
-    margin-left: 10px;
-    margin-right: 10px;
-}
-
-#fox{
-    padding-top: 30%;
-    padding-bottom: 30%;
-    float: left;
-    width: 50%;
-}
-
-#hound{
-    padding-top: 30%;
-    padding-bottom: 30%;
-    float: right;
-    width: 50%;
-}
-
-#fox_image {
-    width: 100%;
-}
-
-#hound_image{
-    width: 100%;
-}
-
+/* Chess board in game page */
 #chess_board {
     table-layout: fixed;
 }
@@ -199,4 +155,72 @@ footer {
 #chess_board  img {
     width: 100%;
     height: 100%;
+}
+
+/* Error tags */
+#content > .error {
+    margin-top: 10%;
+    text-align: center;
+    color: red;
+}
+
+#content > .error img {
+    width: 20px;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+/* Center tag for multiple content elements */
+#content > .center {
+    margin-top: 10%;
+    text-align: center;
+}
+
+/* Content images (currently used in logout) */
+#content > p img {
+    width: 40px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+/* Index page fox & hounds images */
+#content > #index_images {
+    vertical-align: middle;
+    width: 100%;
+}
+
+#content > #index_images img {
+    vertical-align: middle;
+    padding-top: 0;
+}
+
+#fox, #hound {
+    padding-top: 5%;
+    padding-bottom: 30%;
+    float: left;
+    width: 50%;
+    text-align: center;
+    vertical-align: middle;
+}
+
+#fox_image {
+    width: 50%;
+    float: right;
+    padding-right: 10%;
+}
+
+#hound_image {
+    width: 50%;
+    float: left;
+    padding-left: 10%;
+}
+
+/* ------------- Footer div ------------- */
+
+footer {
+    position: fixed;
+    width: 100%;
+    bottom: 0%;
+    background-color: white;
+    text-align: center;
 }

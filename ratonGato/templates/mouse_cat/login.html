@@ -8,7 +8,7 @@
         {% csrf_token %}
         {{ user_form.as_p }}<br/>
         <input type="hidden" name="return_service" value="{{ return_service }}" />
-        <input type="submit" value="Log-In" />
+        <input id="login_button" type="submit" value="Login" />
     </form>
     <p id="return"><a href="{% url 'landing' %}">Return to homepage</a></p>
 </div>

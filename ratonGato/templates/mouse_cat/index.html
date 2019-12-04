@@ -1,14 +1,17 @@
 {% extends "mouse_cat/base.html" %}
-
 {% load staticfiles %}
 
 {% block content %}
 <div id="content">
-    <div id="fox">
-        <img id="fox_image" src="{% static 'images/fox.png' %}" alt="Fox"/>
-    </div>
-    <div id="hound">
-        <img id="hound_image" src="{% static 'images/hound.png' %}" alt="Hound"/>
+    <h1>PSI Projects&reg; Presents</h1>
+    <h1>Fox & Hounds</h1>
+    <div id="index_images">
+        <div id="fox">
+            <img id="fox_image" src="{% static 'images/fox.png' %}" alt="Fox"/>
+        </div>
+        <div id="hound">
+            <img id="hound_image" src="{% static 'images/hound.png' %}" alt="Hound"/>
+        </div>
     </div>
 </div>
 {% endblock content %}
