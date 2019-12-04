@@ -57,7 +57,8 @@ nav > p {
     width: 90%;
     text-align: center;
     background-color: #2C93B9;
-    padding-top: 20px;
+    padding-top: 10px;
+    padding-bottom: 10px;
     margin-left: 5%;
 }
 
@@ -87,7 +88,7 @@ footer {
     padding: 0;
     margin-left: 5%;
     margin-right: 5%;
-    
+
 }
 
 #menu li {
@@ -115,12 +116,44 @@ footer {
     margin: 50px;
 }
 
-#return a {
+#return_center {
+    text-align: center;
+    margin: 50px;
+}
+
+#return a, #return_center a {
     text-decoration: none;
     border-radius: 15px;
     padding: 10px;
     background-color: #2C93B9;
     color: 000000
+}
+
+#move_form > .mouse, #move_form > .cat {
+    margin-left: 0;
+}
+
+#content > .error {
+    margin-top: 10%;
+    text-align: center;
+    color: red;
+}
+
+#content > .error img {
+    width: 20px;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+#content > .center {
+    margin-top: 10%;
+    text-align: center;
+}
+
+#content > p img {
+    width: 40px;
+    margin-left: 10px;
+    margin-right: 10px;
 }
 
 #fox{
@@ -147,15 +180,20 @@ footer {
 
 #chess_board {
     table-layout: fixed;
-    width: 400px;
-    height: 400px;
 }
 
 #chess_board td {
-    width: 50px;
-    height: 50px;
+    width: 55px;
+    height: 55px;
     border: 1px solid #000000;
     text-align: center;
+}
+
+#cell_1, #cell_3, #cell_5, #cell_7, #cell_8, #cell_10, #cell_12, #cell_14,
+#cell_17, #cell_19, #cell_21, #cell_23, #cell_24, #cell_26, #cell_28, #cell_30,
+#cell_33, #cell_35, #cell_37, #cell_39, #cell_40, #cell_42, #cell_44, #cell_46,
+#cell_49, #cell_51, #cell_53, #cell_55, #cell_56, #cell_58, #cell_60, #cell_62 {
+    background-color: #8E8E8E;
 }
 
 #chess_board  img {

@@ -3,6 +3,7 @@
 <head>
     {% block extra_css %}
         <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}"/>
+        <link rel="icon" href="{% static 'images/icon.png' %}">
     {% endblock extra_css %}
 
     {% block extra_js %}
@@ -10,7 +11,7 @@
     {% endblock extra_js %}
 
     {% block extra_head %}
-    
+
     {% endblock extra_head %}
     <title>{% block title %}Fox & Hounds{% endblock %}</title>
 </head>
@@ -27,8 +28,8 @@
                     Welcome <span class="username"></span>{{ request.user.username }}</span>!
                     <br>
                     <a href="{% url 'logout' %}">Logout <i class='fas fa-sign-out-alt'></i></a>
-                </div>           
-                {% endif %}    
+                </div>
+                {% endif %}
             {% endblock atitle %}
         </div>
 
@@ -52,7 +53,7 @@
 
     {% block content %}
     {% endblock content %}
-    
+
     </div>
 
     {% block footer %}

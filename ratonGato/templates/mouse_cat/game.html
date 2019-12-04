@@ -8,28 +8,42 @@
     <form id="move_form" method="post" action="{% url 'move' %}">
         {% csrf_token %}
         <p>
-            Cats: <b>{{ game.cat_user.username }}</b>
+            Hounds:
+            <b>
+                {% if game.cat_user.id == request.user.id %}
+                    You
+                {% else %}
+                    {{ game.cat_user.username }}
+                {% endif %}
+            </b>
             {% if game.cat_user.id == request.user.id %}
                 <blockquote class="cat">
                     {% if game.cat_turn %}
                         {{ move_form }}
                         <input type="submit" value="Move" />
                     {% else %}
-                        Waiting for the mouse...
+                        Waiting for the fox...
                         <a style="margin-left:20px;font-weight:normal" href="{% url 'show_game' %}">Refresh</a>
                     {% endif %}
                 </blockquote>
             {% endif %}
         </p>
         <p>
-            Mouse: <b>{{ game.mouse_user.username }}</b>
+            Fox:
+            <b>
+                {% if game.mouse_user.id == request.user.id %}
+                    You
+                {% else %}
+                    {{ game.mouse_user.username }}
+                {% endif %}
+            </b>
             {% if game.mouse_user.id == request.user.id %}
                 <blockquote class="mouse">
                     {% if not game.cat_turn %}
                         {{ move_form }}
-                        <input type="submit" value="Move" />
+                        <input type="submit" value="Move"/>
                     {% else %}
-                        Waiting for the cat...
+                        Waiting for the hounds...
                         <a style="margin-left:20px;font-weight:normal" href="{% url 'show_game' %}">Refresh</a>
                     {% endif %}
                 </blockquote>
@@ -43,7 +57,7 @@
             {% if forloop.counter0|divisibleby:8 %}
                 <tr>
             {% endif %}
-            <td id="cell_{{ forloop.countr0 }}" >
+            <td id="cell_{{ forloop.counter0 }}">
                 {% if item ==  0 %}
                 {% elif item == 1 %}<img id="duck_hunt" src="{% static 'images/duck_hunt.png' %}" alt="Hound"/>
                 {% else %}<img id="tails" src="{% static 'images/tails.png' %}" alt="Fox"/>

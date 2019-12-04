@@ -2,8 +2,8 @@
 
 {% block content %}
 <div id="content">
-    <h1>Create game</h1>  
-    <p>Game <b>{{ game.id }}</b> succesfully created by user <b>{{ game.cat_user.username }}</b></p>
-    <p id="return"><a href="{% url 'landing' %}">Return to homepage</a></p>
+    <h1>Create game</h1>
+    <p class="center">Game <b>{{ game.id }}</b> succesfully created by user <b>{{ game.cat_user.username }}</b></p>
+    <p id="return_center"><a href="{% url 'landing' %}">Return to homepage</a></p>
 </div>
 {% endblock content %}

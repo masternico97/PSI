@@ -1,9 +1,14 @@
 {% extends "mouse_cat/base.html" %}
+{% load staticfiles %}
 
 {% block content %}
 <div id="content">
     <h1>Logout</h1>
-    <p>Dear <b>{{ user }}</b>, you have been successfully logged out</p>
-    <p id="return"><a href="{% url 'landing' %}">Return to homepage</a></p>
+    <p class="center">
+        <img id="fox_goodbye" src="{% static 'images/fox_goodbye.gif' %}" alt="Fox Waving"/>
+        You have been successfully logged out
+        <img id="hound_goodbye" src="{% static 'images/hound_goodbye.gif' %}" alt="Hound Waving"/>
+    </p>
+    <p id="return_center"><a href="{% url 'landing' %}">Return to homepage</a></p>
 </div>
 {% endblock content %}

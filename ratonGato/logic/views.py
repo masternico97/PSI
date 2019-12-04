@@ -132,7 +132,7 @@ def join_game(request):
         context_dict["game"].mouse_user = request.user
         context_dict["game"].save()
     else:
-        context_dict = {"msg_error": "There is no available games"}
+        context_dict = {"msg_error": "There are no available games"}
     context_dict["counter_global"] = Counter.objects.get_current_value()
     return render(request, "mouse_cat/join_game.html", context_dict)
 
