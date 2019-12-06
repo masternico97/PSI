@@ -1,3 +1,8 @@
+/* -------------- General rules -------------- */
+.errorlist {
+    color: red;
+}
+
 /* ------------- Navigation div ------------- */
 
 nav {
@@ -68,7 +73,6 @@ nav > p {
 }
 
 .initial_form .errorlist {
-    color: red;
     text-align: center;
 }
 
@@ -92,6 +96,15 @@ nav > p {
 #content li a:hover {
     text-decoration: none;
     color: #8E8E8E;
+}
+
+#move_form .errorlist {
+    float: left;
+}
+
+#refresh_link {
+    margin-left: 20px;
+    font-weight: normal;
 }
 
 /* Title square with logo */
