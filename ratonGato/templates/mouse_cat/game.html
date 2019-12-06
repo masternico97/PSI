@@ -23,9 +23,9 @@
                     {{ move_form }}
                     <input type="submit" value="Move">
                 {% else %}
-                    <img class="wait" src="{% static 'images/hound_wait.gif' %}" alt="Hounds">
+                    <img class="wait" src="{% static 'images/fox_wait.gif' %}" alt="Fox">
                     <br>
-                    The hounds are playing, please wait them.
+                    The fox is playing, please wait it.
                 {% endif %}
             {% endif %}
         </p>
@@ -45,9 +45,10 @@
                     {{ move_form }}
                     <input type="submit" value="Move">
                 {% else %}
-                    <img class="wait" src="{% static 'images/fox_wait.gif' %}" alt="Fox">
+                    <img class="wait" src="{% static 'images/hound_wait.gif' %}" alt="Hounds">
                     <br>
-                    The fox is playing, please wait it.
+                    The hounds are playing, please wait them.
+
                 {% endif %}
             {% endif %}
         </p>
