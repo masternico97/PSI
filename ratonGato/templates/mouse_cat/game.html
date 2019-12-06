@@ -17,13 +17,15 @@
                 {% endif %}
             </b>
             {% if game.cat_user.id == request.user.id %}
-                <br><br>
+                <br>
                 {% if game.cat_turn %}
+                    <br>
                     {{ move_form }}
                     <input type="submit" value="Move">
                 {% else %}
-                    Waiting for the fox...
-                    <a id="refresh_link" href="{% url 'show_game' %}">Refresh</a>
+                    <img class="wait" src="{% static 'images/hound_wait.gif' %}" alt="Hounds">
+                    <br>
+                    The hounds are playing, please wait them.
                 {% endif %}
             {% endif %}
         </p>
@@ -37,13 +39,15 @@
                 {% endif %}
             </b>
             {% if game.mouse_user.id == request.user.id %}
-                <br><br>
+                <br>
                 {% if not game.cat_turn %}
+                <br>
                     {{ move_form }}
                     <input type="submit" value="Move">
                 {% else %}
-                    Waiting for the hounds...
-                    <a id="refresh_link" href="{% url 'show_game' %}">Refresh</a>
+                    <img class="wait" src="{% static 'images/fox_wait.gif' %}" alt="Fox">
+                    <br>
+                    The fox is playing, please wait it.
                 {% endif %}
             {% endif %}
         </p>
