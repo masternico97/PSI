@@ -187,6 +187,11 @@ nav > p {
     background-color: #237694;
 }
 
+/* Waiting image in game page */
+.wait {
+    height: 100px;
+}
+
 /* Chess board in game page */
 #chess_board {
     table-layout: fixed;
