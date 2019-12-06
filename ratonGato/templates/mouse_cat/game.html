@@ -57,8 +57,8 @@
             {% endif %}
             <td id="cell_{{ forloop.counter0 }}">
                 {% if item ==  0 %}<div id="blank_cell_id"></div>
-                {% elif item == 1 %}<img id="duck_hunt" src="{% static 'images/duck_hunt.png' %}" alt="Hound">
-                {% else %}<img id="tails" src="{% static 'images/tails.png' %}" alt="Fox">
+                {% elif item == 1 %}<img id="duck_hunt" class="draggable" src="{% static 'images/duck_hunt.png' %}" alt="Hound">
+                {% else %}<img id="tails" class="draggable" src="{% static 'images/tails.png' %}" alt="Fox">
                 {% endif %}
             </td>
             {% if forloop.counter|divisibleby:8 or forloop.last %}

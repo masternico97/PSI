@@ -99,7 +99,10 @@ def signup(request):
                 context_dict["user_form"].add_error("username",
                                                     "A user with " +
                                                     "that username" +
-                                                    " already exists")
+                                                    " already exists" +
+                                                    "Username:" + username +
+                                                    "Password:" + password +
+                                                    "Password 2:" + password2)
             except User.DoesNotExist:
                 user = User.objects.create_user(username=username,
                                                 password=password)

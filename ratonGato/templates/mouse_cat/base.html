@@ -3,12 +3,16 @@
 <head>
     {% block extra_css %}
         <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
-        <link rel="icon" href="{% static 'images/icon.png' %}">
     {% endblock extra_css %}
 
     {% block extra_js %}
         <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+        <script type="text/javascript" src="{% static 'js/drag_and_drop.js' %}"></script>
     {% endblock extra_js %}
+
+    {% block icon %}
+        <link rel="icon" href="{% static 'images/icon.png' %}">
+    {% endblock icon %}
 
     {% block extra_head %}
 

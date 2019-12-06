@@ -36,14 +36,13 @@ nav > p {
 }
 
 /* Login form page */
-#login_form, #signup_form {
+.initial_form {
     border-radius: 5px;
     padding: 20px;
     background-color: #f2f2f2;
 }
 
-#signup_form input[type=text], #login_form input[type=text],
-#signup_form input[type=password], #login_form input[type=password] {
+.initial_form input[type=text], .initial_form input[type=password] {
     width: 100%;
     padding: 12px 20px;
     margin: 8px 0;
@@ -53,7 +52,7 @@ nav > p {
     box-sizing: border-box;
 }
 
-#login_button, #signup_button {
+.initial_form input[type=submit] {
     background-color: #2C93B9;
     color: white;
     padding: 14px 20px;
@@ -64,8 +63,13 @@ nav > p {
     width: 100%;
 }
 
-#login_button:hover, #signup_button:hover {
+.initial_form input[type=submit]:hover {
     background-color: #237694;
+}
+
+.initial_form .errorlist {
+    color: red;
+    text-align: center;
 }
 
 /* List of available games to select */

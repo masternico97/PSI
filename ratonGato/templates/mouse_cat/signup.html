@@ -4,13 +4,13 @@
 <div id="content">
     <h1>Register user</h1>
     {% if user_form %}
-        <form id="signup_form" method="post" action="{% url 'signup' %}">
+        <form id="signup_form" class="initial_form" method="post" action="{% url 'signup' %}">
             {% csrf_token %}
             {{ user_form.as_p }}<br/>
             <input id="signup_button" type="submit" name="submit" value="Register">
         </form>
     {% else %}
-        <p>User successfully created</p>
+        <p>User successfully created. Welcome!</p>
     {% endif %}
     <p id="return"><a href="{% url 'landing' %}">Home</a></p>
 </div>
