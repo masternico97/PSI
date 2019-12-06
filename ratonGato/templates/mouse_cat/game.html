@@ -17,15 +17,14 @@
                 {% endif %}
             </b>
             {% if game.cat_user.id == request.user.id %}
-                <blockquote class="cat">
-                    {% if game.cat_turn %}
-                        {{ move_form }}
-                        <input type="submit" value="Move" />
-                    {% else %}
-                        Waiting for the fox...
-                        <a style="margin-left:20px;font-weight:normal" href="{% url 'show_game' %}">Refresh</a>
-                    {% endif %}
-                </blockquote>
+                <br><br>
+                {% if game.cat_turn %}
+                    {{ move_form }}
+                    <input type="submit" value="Move">
+                {% else %}
+                    Waiting for the fox...
+                    <a style="margin-left:20px;font-weight:normal" href="{% url 'show_game' %}">Refresh</a>
+                {% endif %}
             {% endif %}
         </p>
         <p>
@@ -38,15 +37,14 @@
                 {% endif %}
             </b>
             {% if game.mouse_user.id == request.user.id %}
-                <blockquote class="mouse">
-                    {% if not game.cat_turn %}
-                        {{ move_form }}
-                        <input type="submit" value="Move"/>
-                    {% else %}
-                        Waiting for the hounds...
-                        <a style="margin-left:20px;font-weight:normal" href="{% url 'show_game' %}">Refresh</a>
-                    {% endif %}
-                </blockquote>
+                <br><br>
+                {% if not game.cat_turn %}
+                    {{ move_form }}
+                    <input type="submit" value="Move">
+                {% else %}
+                    Waiting for the hounds...
+                    <a style="margin-left:20px;font-weight:normal" href="{% url 'show_game' %}">Refresh</a>
+                {% endif %}
             {% endif %}
         </p>
     </form>
@@ -58,9 +56,9 @@
                 <tr>
             {% endif %}
             <td id="cell_{{ forloop.counter0 }}">
-                {% if item ==  0 %}
-                {% elif item == 1 %}<img id="duck_hunt" src="{% static 'images/duck_hunt.png' %}" alt="Hound"/>
-                {% else %}<img id="tails" src="{% static 'images/tails.png' %}" alt="Fox"/>
+                {% if item ==  0 %}<div id="blank_cell_id"></div>
+                {% elif item == 1 %}<img id="duck_hunt" src="{% static 'images/duck_hunt.png' %}" alt="Hound">
+                {% else %}<img id="tails" src="{% static 'images/tails.png' %}" alt="Fox">
                 {% endif %}
             </td>
             {% if forloop.counter|divisibleby:8 or forloop.last %}
@@ -69,6 +67,6 @@
         {% endfor %}
         </table>
     {% endif %}
-    <p id="return"><a href="{% url 'landing' %}">Return to homepage</a></p>
+    <p id="return"><a href="{% url 'landing' %}">Home</a></p>
 </div>
 {% endblock content %}

@@ -2,7 +2,7 @@
 <html>
 <head>
     {% block extra_css %}
-        <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}"/>
+        <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
         <link rel="icon" href="{% static 'images/icon.png' %}">
     {% endblock extra_css %}
 
@@ -21,7 +21,7 @@
         <div id="title">
             {% block atitle %}
                 <div>
-                    <img id="logo_image" src="{% static 'images/logo.png' %}" alt="Logo"/>
+                    <img id="logo_image" src="{% static 'images/logo.png' %}" alt="Logo">
                 </div>
                 {% if request.user.is_authenticated %}
                 <div id=user_info>
@@ -42,7 +42,7 @@
                 <li><a href="{% url 'show_game' %}">Show selected game and play</a></li>
                 {% else %}
                 <li><a href="{% url 'login' %}">Login</a></li>
-                <li><a href="{% url 'signup' %}">Signup</a></li>
+                <li><a href="{% url 'signup' %}">Register</a></li>
                 {% endif %}
             </ul>
         </div>

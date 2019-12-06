@@ -3,20 +3,12 @@
 {% block content %}
 <div id="content">
     <h1>Login</h1>
-    <div id="login">
         <form id="login_form" method="post" action="{% url 'login' %}">
             {% csrf_token %}
-            <div id="login_fields">
-                <p id="login_username_tag">Username:</p>
-                {{ user_form.username }}
-                <p id="login_password_tag">Password:</p>
-                {{ user_form.password }}
-            </div>
-            <br/>
-            <input type="hidden" name="return_service" value="{{ return_service }}" />
-            <input id="login_button" type="submit" value="Login"/>
+            {{ user_form.as_p }}<br>
+            <input type="hidden" name="return_service" value="{{ return_service }}" >
+            <input id="login_button" type="submit" value="Login">
         </form>
-    </div>
-    <p id="return"><a href="{% url 'landing' %}">Return to homepage</a></p>
+    <p id="return"><a href="{% url 'landing' %}">Home</a></p>
 </div>
 {% endblock content %}

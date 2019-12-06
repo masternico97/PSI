@@ -36,35 +36,14 @@ nav > p {
 }
 
 /* Login form page */
-#login {
-    text-align: center;
-}
-
-#login_header {
-    margin-top: 0;
-    margin-bottom: 0;
-    float: left;
-}
-
-#login_form {
-    width: 95%;
-    float: left;
+#login_form, #signup_form {
     border-radius: 5px;
-    background-color: #f2f2f2;
     padding: 20px;
-}
-
-#login_fields, #signup_fields {
-    border-radius: 5px;
     background-color: #f2f2f2;
-    padding: 20px;
 }
 
-#login_username_tag, #login_password_tag {
-    float: left;
-}
-
-input[type=text], input[type=password], select {
+#signup_form input[type=text], #login_form input[type=text],
+#signup_form input[type=password], #login_form input[type=password] {
     width: 100%;
     padding: 12px 20px;
     margin: 8px 0;
@@ -85,7 +64,7 @@ input[type=text], input[type=password], select {
     width: 100%;
 }
 
-#login_button:hover {
+#login_button:hover, #signup_button:hover {
     background-color: #237694;
 }
 
@@ -140,25 +119,27 @@ input[type=text], input[type=password], select {
     padding: 0;
     margin-left: 5%;
     margin-right: 5%;
-
 }
 
 #menu li {
-    list-style-type: none;
     background-color: #8E8E8E;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    padding-left: 5%;
+    list-style-type: none;
 }
 
 #menu li:hover {
     background-color: #A9A9A9;
 }
 
-
 #menu li a {
+    margin: 0px;
+    display: block;
+    width: 90%;
     color: white;
     text-decoration: none;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 5%;
+    padding-right: 5%;
 }
 
 /* 'Return to homepage' button */
@@ -177,14 +158,16 @@ input[type=text], input[type=password], select {
 #return a, #return_center a {
     text-decoration: none;
     border-radius: 15px;
-    padding: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
     background-color: #2C93B9;
-    color: 000000
+    color: #000000
 }
 
-/* Move form in game page */
-#move_form > .mouse, #move_form > .cat {
-    margin-left: 0;
+#return a:hover, #return_center a:hover {
+    background-color: #237694;
 }
 
 /* Chess board in game page */
@@ -193,10 +176,11 @@ input[type=text], input[type=password], select {
 }
 
 #chess_board td {
-    width: 55px;
-    height: 55px;
+    width: 60px;
+    height: 60px;
     border: 1px solid #000000;
     text-align: center;
+    padding: 0;
 }
 
 #cell_1, #cell_3, #cell_5, #cell_7, #cell_8, #cell_10, #cell_12, #cell_14,
@@ -204,6 +188,12 @@ input[type=text], input[type=password], select {
 #cell_33, #cell_35, #cell_37, #cell_39, #cell_40, #cell_42, #cell_44, #cell_46,
 #cell_49, #cell_51, #cell_53, #cell_55, #cell_56, #cell_58, #cell_60, #cell_62 {
     background-color: #8E8E8E;
+}
+
+#blank_cell_id {
+    width: 60px;
+    padding-top: 100%;
+    margin: 0;
 }
 
 #chess_board  img {
