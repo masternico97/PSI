@@ -35,6 +35,60 @@ nav > p {
     font-size: 250%
 }
 
+/* Login form page */
+#login {
+    text-align: center;
+}
+
+#login_header {
+    margin-top: 0;
+    margin-bottom: 0;
+    float: left;
+}
+
+#login_form {
+    width: 95%;
+    float: left;
+    border-radius: 5px;
+    background-color: #f2f2f2;
+    padding: 20px;
+}
+
+#login_fields, #signup_fields {
+    border-radius: 5px;
+    background-color: #f2f2f2;
+    padding: 20px;
+}
+
+#login_username_tag, #login_password_tag {
+    float: left;
+}
+
+input[type=text], input[type=password], select {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+#login_button, #signup_button {
+    background-color: #2C93B9;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+}
+
+#login_button:hover {
+    background-color: #237694;
+}
+
 /* List of available games to select */
 #content li {
     list-style-type: none;
