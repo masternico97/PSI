@@ -1,4 +1,5 @@
 /* -------------- General rules -------------- */
+/* Red color for all error messages */
 .errorlist {
     color: red;
 }
@@ -99,7 +100,7 @@ nav > p {
 }
 
 #move_form .errorlist {
-    float: left;
+    padding-left: 0;
 }
 
 #refresh_link {
@@ -187,6 +188,11 @@ nav > p {
     background-color: #237694;
 }
 
+/* Move form in game page */
+#move_form label, #id_origin, #id_target, #move_button {
+    display: none;
+}
+
 /* Chess board in game page */
 #chess_board {
     table-layout: fixed;
@@ -207,9 +213,9 @@ nav > p {
     background-color: #8E8E8E;
 }
 
-#blank_cell_id {
+.blank_cell {
     width: 60px;
-    padding-top: 100%;
+    height: 60px;
     margin: 0;
 }
 
@@ -229,6 +235,10 @@ nav > p {
     width: 20px;
     margin-left: 5px;
     margin-right: 5px;
+}
+
+#move_form li:before {
+    display: none;
 }
 
 /* Center tag for multiple content elements */

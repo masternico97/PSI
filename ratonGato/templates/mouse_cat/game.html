@@ -16,16 +16,6 @@
                     {{ game.cat_user.username }}
                 {% endif %}
             </b>
-            {% if game.cat_user.id == request.user.id %}
-                <br><br>
-                {% if game.cat_turn %}
-                    {{ move_form }}
-                    <input type="submit" value="Move">
-                {% else %}
-                    Waiting for the fox...
-                    <a id="refresh_link" href="{% url 'show_game' %}">Refresh</a>
-                {% endif %}
-            {% endif %}
         </p>
         <p>
             Fox:
@@ -36,17 +26,24 @@
                     {{ game.mouse_user.username }}
                 {% endif %}
             </b>
-            {% if game.mouse_user.id == request.user.id %}
-                <br><br>
-                {% if not game.cat_turn %}
-                    {{ move_form }}
-                    <input type="submit" value="Move">
-                {% else %}
-                    Waiting for the hounds...
-                    <a id="refresh_link" href="{% url 'show_game' %}">Refresh</a>
-                {% endif %}
-            {% endif %}
         </p>
+        {% if game.cat_user.id == request.user.id %}
+            {% if game.cat_turn %}
+                {{ move_form }}
+                <input id="move_button" type="submit" value="Move">
+            {% else %}
+                Waiting for the fox...
+                <a id="refresh_link" href="{% url 'show_game' %}">Refresh</a>
+            {% endif %}
+        {% else %}
+            {% if not game.cat_turn %}
+                {{ move_form }}
+                <input id="move_button" type="submit" value="Move">
+            {% else %}
+                Waiting for the hounds...
+                <a id="refresh_link" href="{% url 'show_game' %}">Refresh</a>
+            {% endif %}
+        {% endif %}
     </form>
 
     {% if board %}
@@ -55,11 +52,13 @@
             {% if forloop.counter0|divisibleby:8 %}
                 <tr>
             {% endif %}
-            <td id="cell_{{ forloop.counter0 }}">
-                {% if item ==  0 %}<div id="blank_cell_id"></div>
-                {% elif item == 1 %}<img id="duck_hunt" class="draggable" src="{% static 'images/duck_hunt.png' %}" alt="Hound">
-                {% else %}<img id="tails" class="draggable" src="{% static 'images/tails.png' %}" alt="Fox">
+            <td id="cell_{{ forloop.counter0 }}" ondrop="drop(event)" ondragover="allowDrop(event)">
+                <div id="blank_cell_{{ forloop.counter0 }}" class="blank_cell">
+                {% if item ==  0 %}
+                {% elif item == 1 %}<img id="duck_hunt_{{ forloop.counter0 }}" class="draggable" ondragstart="drag(event)" src="{% static 'images/duck_hunt.png' %}" alt="Hound">
+                {% else %}<img id="tails" class="draggable" ondragstart="drag(event)" src="{% static 'images/tails.png' %}" alt="Fox">
                 {% endif %}
+                </div>
             </td>
             {% if forloop.counter|divisibleby:8 or forloop.last %}
                 </tr>
