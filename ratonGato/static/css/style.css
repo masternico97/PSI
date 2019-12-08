@@ -38,7 +38,9 @@ nav > p {
 /* Content titles */
 #content h1 {
     text-align: center;
-    font-size: 250%
+    font-size: 250%;
+    margin-block-start: 0.33em;
+    margin-block-end: 0.33em;
 }
 
 /* Login form page */
@@ -191,6 +193,11 @@ nav > p {
 /* Move form in game page */
 #move_form label, #id_origin, #id_target, #move_button {
     display: none;
+}
+
+/*  */
+.wait {
+    height: 60px;
 }
 
 /* Chess board in game page */

@@ -146,23 +146,28 @@ def select_game(request, game_id=None):
         game = Game.objects.filter(id=game_id)
         if(game):
             game = game[0]
-            if((game.cat_user == request.user
-                or game.mouse_user == request.user)
-               and game.status == GameStatus.ACTIVE):
-                context_dict = {"move_form": MoveForm(request.POST or None)}
-                request.session["game_selected"] = game_id
-                context_dict["game"] = game
+            if(game.status == GameStatus.CREATED):
+                game.mouse_user = request.user
+                game.save()
 
-                board = [0 for i in range(64)]
-                board[game.cat1] = 1
-                board[game.cat2] = 1
-                board[game.cat3] = 1
-                board[game.cat4] = 1
-                board[game.mouse] = -1
-                context_dict["board"] = board
-                context_dict["counter_global"] = Counter.objects.get_current_value()
+            if(game.cat_user == request.user
+               or game.mouse_user == request.user):        
 
-                return render(request, "mouse_cat/game.html", context_dict)
+                if(game.status == GameStatus.ACTIVE):
+                    context_dict = {"move_form": MoveForm(request.POST or None)}
+                    request.session["game_selected"] = game_id
+                    context_dict["game"] = game
+
+                    board = [0 for i in range(64)]
+                    board[game.cat1] = 1
+                    board[game.cat2] = 1
+                    board[game.cat3] = 1
+                    board[game.cat4] = 1
+                    board[game.mouse] = -1
+                    context_dict["board"] = board
+                    context_dict["counter_global"] = Counter.objects.get_current_value()
+
+                    return render(request, "mouse_cat/game.html", context_dict)
         retorno = errorHTTP(request, "Game does not exist")
         retorno.status_code = 404
         return retorno
@@ -171,10 +176,14 @@ def select_game(request, game_id=None):
         context_dict = {}
         context_dict["as_cat"] = (Game.objects.
                                   filter(cat_user=request.user).
-                                  filter(status=GameStatus.ACTIVE))
+                                  exclude(status=GameStatus.CREATED))
         context_dict["as_mouse"] = (Game.objects.
                                     filter(mouse_user=request.user).
-                                    filter(status=GameStatus.ACTIVE))
+                                    exclude(status=GameStatus.CREATED))
+        context_dict["join"] = (Game.objects.
+                                exclude(cat_user=request.user).
+                                filter(status=GameStatus.CREATED))
+
         context_dict["counter_global"] = Counter.objects.get_current_value()
 
         return render(request, "mouse_cat/select_game.html", context_dict)

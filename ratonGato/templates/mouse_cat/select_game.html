@@ -11,24 +11,23 @@
                 <li>
                     <a href="{% url 'select_game' game.id %}">
                         <b>Game {{game.id}}</b>:
-                        {% if game.status == 1 %}
-                            Created,
-                        {% elif game.status == 2 %}
-                            Active,
+                        {% if game.status == 2 %}
+                            Active
+                            {% if game.cat_turn %}
+                                Hounds'
+                            {% else %}
+                                Your
+                            {% endif %}
+                            turn
                         {% else %}
                             Finished,
-                        {% endif %}
-                        {% if game.cat_turn %}
-                            Your
-                        {% else %}
-                            Fox's
                         {% endif %}
                         turn
                     </a>
                 </li>
             {% endfor %}
             </ul>
-        {%  else %}
+        {% else %}
             No games as hounds
         {% endif %}
     </p>
@@ -41,25 +40,42 @@
                 <li>
                     <a href="{% url 'select_game' game.id %}">
                         <b>Game {{game.id}}</b>:
-                        {% if game.status == 1 %}
-                            Created,
-                        {% elif game.status == 2 %}
+                        {% if game.status == 2 %}
                             Active,
+                            {% if game.cat_turn %}
+                                Hounds'
+                            {% else %}
+                                Your
+                            {% endif %}
+                            turn
                         {% else %}
-                            Finished,
+                            Finished
                         {% endif %}
-                        {% if game.cat_turn %}
-                            Hounds'
-                        {% else %}
-                            Your
-                        {% endif %}
-                        turn
+                       
                     </a>
                 </li>
             {% endfor %}
             </ul>
-        {%  else %}
+        {% else %}
             No games as fox
+        {% endif %}
+    </p>
+
+    <p>
+        {% if join %}
+            Games as fox:
+            <ul>
+            {% for game in join %}
+                <li>
+                    <a href="{% url 'select_game' game.id %}">
+                        <b>Game {{game.id}}</b>:
+                        Created, Hounds' turn
+                    </a>
+                </li>
+            {% endfor %}
+            </ul>
+        {% else %}
+            No avaliable games to join
         {% endif %}
     </p>
 
