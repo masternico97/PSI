@@ -151,10 +151,11 @@ def select_game(request, game_id=None):
                 game.save()
 
             if(game.cat_user == request.user
-               or game.mouse_user == request.user):        
+               or game.mouse_user == request.user):
 
                 if(game.status == GameStatus.ACTIVE):
-                    context_dict = {"move_form": MoveForm(request.POST or None)}
+                    context_dict = {"move_form":
+                                    MoveForm(request.POST or None)}
                     request.session["game_selected"] = game_id
                     context_dict["game"] = game
 
@@ -165,7 +166,8 @@ def select_game(request, game_id=None):
                     board[game.cat4] = 1
                     board[game.mouse] = -1
                     context_dict["board"] = board
-                    context_dict["counter_global"] = Counter.objects.get_current_value()
+                    context_dict["counter_globa"
+                                 "l"] = Counter.objects.get_current_value()
 
                     return render(request, "mouse_cat/game.html", context_dict)
         retorno = errorHTTP(request, "Game does not exist")
@@ -209,7 +211,8 @@ def show_game(request):
                 board[game.mouse] = -1
 
                 context_dict["board"] = board
-                context_dict["counter_global"] = Counter.objects.get_current_value()
+                context_dict["counter_globa"
+                             "l"] = Counter.objects.get_current_value()
 
                 return render(request, "mouse_cat/game.html", context_dict)
 

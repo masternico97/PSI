@@ -2,15 +2,12 @@
 @author: Martin Salinas and Nicolas Serrano
 """
 
-from django.contrib.auth.models import User
-from django.core.exceptions import ValidationError
-from django.test import TestCase
+# from django.contrib.auth.models import User
+# from django.core.exceptions import ValidationError
+# from django.test import TestCase
 
 from . import tests
-from .models import Counter, Game, GameStatus, Move
-
-
-
+from .models import Game, GameStatus, Move
 
 
 class GameEndTests(tests.BaseModelTest):

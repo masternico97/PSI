@@ -139,35 +139,36 @@ class Move(models.Model):
         return list
 
     def finish(self):
+        finished = False
+
         # If mouse gets to any of this places, it wins
         top_line = [0, 2, 4, 6]
         if self.game.mouse in top_line:
-            self.game.status = GameStatus.FINISHED
-            return True
+            finished = True
 
         # If mouse has nowhere to move, it loses
-        if(not self.mouse_posibilities(self.game.mouse)):
-            self.game.status = GameStatus.FINISHED
-            return True
+        elif(not self.mouse_posibilities(self.game.mouse)):
+            finished = True
 
         # If all cats are out of movements, cat player loses
-        if(not self.cat_posibilities(self.game.cat1)
-           and not self.cat_posibilities(self.game.cat2)
-           and not self.cat_posibilities(self.game.cat3)
-           and not self.cat_posibilities(self.game.cat4)):
-            self.game.status = GameStatus.FINISHED
-            return True
+        elif(not self.cat_posibilities(self.game.cat1)
+             and not self.cat_posibilities(self.game.cat2)
+             and not self.cat_posibilities(self.game.cat3)
+             and not self.cat_posibilities(self.game.cat4)):
+            finished = True
 
         # If mouse is above every cat, cats can't stop it from
         # getting to the top, so it automatically wins
-        if(self.game.mouse < self.game.cat1 and
-           self.game.mouse < self.game.cat2 and
-           self.game.mouse < self.game.cat3 and
-           self.game.mouse < self.game.cat4):
-            self.game.status = GameStatus.FINISHED
-            return True
+        elif(self.game.mouse < self.game.cat1 and
+             self.game.mouse < self.game.cat2 and
+             self.game.mouse < self.game.cat3 and
+             self.game.mouse < self.game.cat4):
+            finished = True
 
-        return False
+        if finished:
+            self.game.status = GameStatus.FINISHED
+        self.game.save()
+        return finished
 
     def save(self, *args, **kwargs):
         # You can't move if the game is not activated
@@ -215,7 +216,6 @@ class Move(models.Model):
             else:
                 raise ValidationError(tests.MSG_ERROR_MOVE)
             self.game.cat_turn = False
-            self.game.save()
 
         elif(not self.game.cat_turn
              and self.game.mouse_user == self.player
@@ -225,7 +225,6 @@ class Move(models.Model):
             else:
                 raise ValidationError(tests.MSG_ERROR_MOVE)
             self.game.cat_turn = True
-            self.game.save()
 
         else:
             raise ValidationError(tests.MSG_ERROR_MOVE)
