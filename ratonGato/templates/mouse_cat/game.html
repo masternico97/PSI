@@ -4,52 +4,64 @@
 {% block content %}
 <div id="content">
     <h1>Play</h1>
-    <p>Game: <b>{{ game.id }}</b></p>
-    <form id="move_form" method="post" action="{% url 'move' %}">
-        {% csrf_token %}
-        <p>
-            Hounds:
-            <b>
-                {% if game.cat_user.id == request.user.id %}
-                    You
+    <div id="game_wrapper">
+        <div id="game_data">
+            <p>Game: <b>{{ game.id }}</b></p>
+                <p>
+                    Hounds:
+                    <b>
+                        {% if game.cat_user.id == request.user.id %}
+                            You
+                        {% else %}
+                            {{ game.cat_user.username }}
+                        {% endif %}
+                    </b>
+                </p>
+                <p>
+                    Fox:
+                    <b>
+                        {% if game.mouse_user.id == request.user.id %}
+                            You
+                        {% else %}
+                            {{ game.mouse_user.username }}
+                        {% endif %}
+                    </b>
+                </p>
+            </div>
+            {% if game.cat_user.id == request.user.id %}
+                {% if game.cat_turn %}
+                    <form id="move_form" method="post" action="{% url 'move' %}">
+                        {% csrf_token %}
+                        <div id="game_error_wrapper">
+                            {{ move_form }}
+                            <input id="move_button" type="submit" value="Move">
+                        </div>
+                    </form>
                 {% else %}
-                    {{ game.cat_user.username }}
+                    <div id="wait_message_div">
+                        <img src="{% static 'images/fox_wait.gif' %}" alt="Fox">
+                        <br>
+                        <p>The fox is playing, please wait for it.<a id="refresh_link" href="{% url 'show_game' %}">Refresh</a></p>
+                    </div>
                 {% endif %}
-            </b>
-        </p>
-        <p>
-            Fox:
-            <b>
-                {% if game.mouse_user.id == request.user.id %}
-                    You
+            {% else %}
+                {% if not game.cat_turn %}
+                    <form id="move_form" method="post" action="{% url 'move' %}">
+                        {% csrf_token %}
+                        <div id="game_error_wrapper">
+                            {{ move_form }}
+                            <input id="move_button" type="submit" value="Move">
+                        </div>
+                    </form>
                 {% else %}
-                    {{ game.mouse_user.username }}
+                    <div id="wait_message_div">
+                        <img class="wait" src="{% static 'images/hound_wait.gif' %}" alt="Hounds">
+                        <br>
+                        <p class="chess_table_aligned">The hounds are playing, please wait for them.<a id="refresh_link" href="{% url 'show_game' %}">Refresh</a></p>
+                    </div>
                 {% endif %}
-            </b>
-        </p>
-        {% if game.cat_user.id == request.user.id %}
-            {% if game.cat_turn %}
-                {{ move_form }}
-                <input id="move_button" type="submit" value="Move">
-            {% else %}
-                <img class="wait" src="{% static 'images/fox_wait.gif' %}" alt="Fox">
-                <br>
-                The fox is playing, please wait for it.
-                <a id="refresh_link" href="{% url 'show_game' %}">Refresh</a>
             {% endif %}
-        {% else %}
-            {% if not game.cat_turn %}
-                {{ move_form }}
-                <input id="move_button" type="submit" value="Move">
-            {% else %}
-                <img class="wait" src="{% static 'images/hound_wait.gif' %}" alt="Hounds">
-                <br>
-                The hounds are playing, please wait for them.
-                <a id="refresh_link" href="{% url 'show_game' %}">Refresh</a>
-            {% endif %}
-        {% endif %}
-    </form>
-
+        </div>
     {% if board %}
         <table id="chess_board">
         {% for item in board %}

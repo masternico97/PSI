@@ -4,11 +4,11 @@ $(document).ready(function() {
 
 	$('.draggable').on("dragstart", function (draggable) {
           var elemId = $(this).parent().attr("id");
-		  var img = $(this).attr("id");
 		  initial_position = elemId.substring(11, elemId.length);
 		  // var gif = document.createElement("img");
-		  // gif.src = "http://kryogenix.org/images/hackergotchi-simpler.png";
+		  // gif.src = "sample_url";
 		  // draggable.dataTransfer.setDragImage(gif, 0, 0);
+		  // var img = $(this).attr("id");
 		  //document.getElementById(img).style.visibility = "hidden";
 		  //document.getElementById(img).hidden = true;
     });

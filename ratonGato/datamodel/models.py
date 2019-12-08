@@ -158,6 +158,15 @@ class Move(models.Model):
             self.game.status = GameStatus.FINISHED
             return True
 
+        # If mouse is above every cat, cats can't stop it from
+        # getting to the top, so it automatically wins
+        if(self.game.mouse < self.game.cat1 and
+           self.game.mouse < self.game.cat2 and
+           self.game.mouse < self.game.cat3 and
+           self.game.mouse < self.game.cat4):
+            self.game.status = GameStatus.FINISHED
+            return True
+
         return False
 
     def save(self, *args, **kwargs):
