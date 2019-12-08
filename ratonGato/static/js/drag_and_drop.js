@@ -6,9 +6,9 @@ $(document).ready(function() {
           var elemId = $(this).parent().attr("id");
 		  var img = $(this).attr("id");
 		  initial_position = elemId.substring(11, elemId.length);
-		  var gif = document.createElement("img");
-		  gif.src = "http://kryogenix.org/images/hackergotchi-simpler.png";
-		  draggable.dataTransfer.setDragImage(gif, 0, 0);
+		  // var gif = document.createElement("img");
+		  // gif.src = "http://kryogenix.org/images/hackergotchi-simpler.png";
+		  // draggable.dataTransfer.setDragImage(gif, 0, 0);
 		  //document.getElementById(img).style.visibility = "hidden";
 		  //document.getElementById(img).hidden = true;
     });
