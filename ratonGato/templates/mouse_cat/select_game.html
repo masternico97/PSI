@@ -3,6 +3,7 @@
 {% block content %}
 <div id="content">
     <h1>Select game</h1>
+    <p><b><u>Games joined</u>:</b></p>
     <p>
         {% if as_cat %}
             Games as hounds:
@@ -12,17 +13,16 @@
                     <a href="{% url 'select_game' game.id %}">
                         <b>Game {{game.id}}</b>:
                         {% if game.status == 2 %}
-                            Active
+                            Active,
                             {% if game.cat_turn %}
-                                Hounds'
-                            {% else %}
                                 Your
+                            {% else %}
+                                Fox's
                             {% endif %}
-                            turn
+                            turn.
                         {% else %}
                             Finished,
                         {% endif %}
-                        turn
                     </a>
                 </li>
             {% endfor %}
@@ -31,7 +31,6 @@
             No games as hounds
         {% endif %}
     </p>
-
     <p>
         {% if as_mouse %}
             Games as fox:
@@ -47,11 +46,10 @@
                             {% else %}
                                 Your
                             {% endif %}
-                            turn
+                            turn.
                         {% else %}
                             Finished
                         {% endif %}
-                       
                     </a>
                 </li>
             {% endfor %}
@@ -60,7 +58,7 @@
             No games as fox
         {% endif %}
     </p>
-
+    <p><b><u>Games to join</u>:</b></p>
     <p>
         {% if join %}
             Games as fox:
@@ -69,7 +67,7 @@
                 <li>
                     <a href="{% url 'select_game' game.id %}">
                         <b>Game {{game.id}}</b>:
-                        Created, Hounds' turn
+                        Created, Hounds' turn.
                     </a>
                 </li>
             {% endfor %}
@@ -78,7 +76,6 @@
             No avaliable games to join
         {% endif %}
     </p>
-
     <p id="return"><a href="{% url 'landing' %}">Home</a></p>
 </div>
 {% endblock content %}
