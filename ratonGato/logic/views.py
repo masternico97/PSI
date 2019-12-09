@@ -8,6 +8,7 @@ from django.contrib.auth import logout as django_logout
 from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator
+from django.http import JsonResponse
 
 
 # Import the models
@@ -154,7 +155,6 @@ def select_game(request, game_id=None):
             if(game.cat_user == request.user
                or game.mouse_user == request.user):
 
-                
                 context_dict = {"move_form":
                                 MoveForm(request.POST or None)}
                 request.session["game_selected"] = game_id
@@ -172,6 +172,8 @@ def select_game(request, game_id=None):
                 if(game.status == GameStatus.ACTIVE):
                     return render(request, "mouse_cat/game.html", context_dict)
                 elif(game.status == GameStatus.FINISHED):
+                    context_dict["shift"] = game.moves.count()
+                    context_dict["max_shift"] = game.moves.count()
                     return render(request, "mouse_cat/replay.html", context_dict)
 
         retorno = errorHTTP(request, "Game does not exist")
@@ -299,3 +301,29 @@ def get_move(request):
         retorno = errorHTTP(request, "GET not allowed")
         retorno.status_code = 404
         return retorno
+
+    if request.method == 'POST':
+        shift = int(request.POST.get('shift'))
+        game = Game.objects.filter(id=request.session["game_selected"])[0]
+        
+        if shift < 0 or shift > game.moves.count():
+            retorno = errorHTTP(request, "Replay not allowed")
+            retorno.status_code = 404
+            return retorno
+        
+        response_data = {}
+        movements = Move.objects.filter(game=game)
+
+        response_data['origin'] = movements[shift].origin
+        response_data['target'] = movements[shift].target
+        if shift == game.moves.count():
+            response_data['next'] = False
+        else:
+            response_data['next'] = True
+        if shift == 0:
+            response_data['previous'] = False
+        else:
+            response_data['previous'] = True
+        
+        return JsonResponse(response_data)
+    

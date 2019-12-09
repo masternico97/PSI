@@ -30,6 +30,18 @@
             </p>
         </div>
     </div>
+    <div id="replay_menu">
+        {% if shift >= 0 %}
+            <button class="replay_button" onclick="replay({{ shift }} - 1)" type="button"><<</button>
+        {% endif %}
+        {% if shift != max_shift %}
+            <button class="replay_button" onclick="replay({{ max_shift }})" type="button">AUTO</button>
+        {% endif %}
+        {% if shift < max_shift %}
+            <button class="replay_button" onclick="replay({{ shift }} + 1)" type="button">>></button>
+        {% endif %}
+    </div>
+
     <div id="board-text_wrapper">
         {% if board %}
             <table id="chess_board">
@@ -51,15 +63,8 @@
             {% endfor %}
             </table>
         {% endif %}
-        <form id="move_form" method="post" action="{% url 'get_move' %}">
-            {% csrf_token %}
-            <div id="game_error_wrapper">
-                {{ move_form }}
-                <input id="move_button" type="submit" value="Move">
-            </div>
-        </form>
 
-        {% if game.status == 3 %}
+        {% if shift == max_shift %}
             <div class="content_wrapper">
                 <p id="endgame_message_content">
                     {% if game.cat_user.id == request.user.id %}
