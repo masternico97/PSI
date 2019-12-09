@@ -94,7 +94,7 @@
                 <li>
                     <a href="{% url 'select_game' game.id %}">
                         <b>Game {{game.id}}</b>:
-                        Created, by {{ game.cat_username }}. Waiting for someone to join ...
+                        Created, by {{ game.cat_user.username }}. Waiting for someone to join ...
                     </a>
                 </li>
             {% endfor %}
