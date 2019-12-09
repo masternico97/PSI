@@ -15,17 +15,17 @@
                         {% if game.status == 2 %}
                             Active,
                             {% if game.cat_turn %}
-                                Your
+                                your
                             {% else %}
-                                Fox's
+                                {{ game.mouse_user.username }}'s
                             {% endif %}
                             turn.
                         {% else %}
                             Finished,
                             {% if game.winner == 1 %}
-                                Fox won.
+                                {{ game.mouse_user.username }} won.
                             {% else %}
-                                You won.
+                                you won.
                             {% endif %}
                         {% endif %}
                     </a>
@@ -47,17 +47,17 @@
                         {% if game.status == 2 %}
                             Active,
                             {% if game.cat_turn %}
-                                Hounds'
+                                {{ game.cat_user.username }}'s
                             {% else %}
-                                Your
+                                your
                             {% endif %}
                             turn.
                         {% else %}
                             Finished,
                             {% if game.winner == 1 %}
-                                You won.
+                                you won.
                             {% else %}
-                                Hounds won.
+                                {{ game.cat_user.username }} won.
                             {% endif %}
                         {% endif %}
                     </a>
