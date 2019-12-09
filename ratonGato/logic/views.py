@@ -7,6 +7,7 @@ from django.contrib.auth import login as django_login
 from django.contrib.auth import logout as django_logout
 from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
+from django.core.paginator import Paginator
 
 
 # Import the models
@@ -176,15 +177,35 @@ def select_game(request, game_id=None):
 
     if request.method == 'GET':
         context_dict = {}
-        context_dict["as_cat"] = (Game.objects.
-                                  filter(cat_user=request.user).
-                                  exclude(status=GameStatus.CREATED))
-        context_dict["as_mouse"] = (Game.objects.
-                                    filter(mouse_user=request.user).
-                                    exclude(status=GameStatus.CREATED))
-        context_dict["join"] = (Game.objects.
-                                exclude(cat_user=request.user).
-                                filter(status=GameStatus.CREATED))
+        as_cat = (Game.objects.
+                  filter(cat_user=request.user).
+                  filter(status=GameStatus.ACTIVE))
+        as_mouse = (Game.objects.
+                    filter(mouse_user=request.user).
+                    filter(status=GameStatus.ACTIVE))
+        join = (Game.objects.
+                exclude(cat_user=request.user).
+                filter(status=GameStatus.CREATED))
+        replay = ((Game.objects.
+                   filter(cat_user=request.user).
+                   filter(status=GameStatus.FINISHED))
+                  |(Game.objects.
+                    filter(mouse_user=request.user).
+                    filter(status=GameStatus.FINISHED)))
+        paginator_as_cat = Paginator(as_cat, 5)
+        paginator_as_mouse = Paginator(as_mouse, 5)
+        paginator_join = Paginator(join, 5)
+        paginator_replay = Paginator(replay, 5)
+
+        page_as_cat = request.GET.get('page_as_cat')
+        context_dict["as_cat"] = paginator_as_cat.get_page(page_as_cat)
+        page_as_mouse = request.GET.get('as_mouse')
+        context_dict["as_mouse"] = paginator_as_mouse.get_page(page_as_mouse)
+        page_join = request.GET.get('page_join')
+        context_dict["join"] = paginator_join.get_page(page_join)
+        page_replay = request.GET.get('page_replay')
+        context_dict["replay"] = paginator_replay.get_page(page_replay) 
+        
 
         context_dict["counter_global"] = Counter.objects.get_current_value()
 

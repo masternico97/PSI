@@ -20,18 +20,28 @@
                                 {{ game.mouse_user.username }}'s
                             {% endif %}
                             turn.
-                        {% else %}
-                            Finished,
-                            {% if game.winner == 1 %}
-                                {{ game.mouse_user.username }} won.
-                            {% else %}
-                                you won.
-                            {% endif %}
                         {% endif %}
                     </a>
                 </li>
             {% endfor %}
             </ul>
+            <div class="pagination">
+                <span class="step-links">
+                    {% if as_cat.has_previous %}
+                        <a href="?page_as_cat=1">&laquo; first</a>
+                        <a href="?page_as_cat={{ as_cat.previous_page_number }}">previous</a>
+                    {% endif %}
+            
+                    <span class="current">
+                        Page {{ as_cat.number }} of {{ as_cat.paginator.num_pages }}.
+                    </span>
+            
+                    {% if as_cat.has_next %}
+                        <a href="?page_as_cat={{ as_cat.next_page_number }}">next</a>
+                        <a href="?page_as_cat={{ as_cat.paginator.num_pages }}">last &raquo;</a>
+                    {% endif %}
+                </span>
+            </div>
         {% else %}
             No games as hounds
         {% endif %}
@@ -64,6 +74,23 @@
                 </li>
             {% endfor %}
             </ul>
+            <div class="pagination">
+                <span class="step-links">
+                    {% if as_mouse.has_previous %}
+                        <a href="?page_as_mouse=1">&laquo; first</a>
+                        <a href="?page_as_mouse={{ as_mouse.previous_page_number }}">previous</a>
+                    {% endif %}
+            
+                    <span class="current">
+                        Page {{ as_mouse.number }} of {{ as_mouse.paginator.num_pages }}.
+                    </span>
+            
+                    {% if as_mouse.has_next %}
+                        <a href="?page_as_mouse={{ as_mouse.next_page_number }}">next</a>
+                        <a href="?page_as_mouse={{ as_mouse.paginator.num_pages }}">last &raquo;</a>
+                    {% endif %}
+                </span>
+            </div>
         {% else %}
             No games as fox
         {% endif %}
@@ -71,7 +98,6 @@
     <p><b><u>Games to join</u>:</b></p>
     <p>
         {% if join %}
-            Games as fox:
             <ul>
             {% for game in join %}
                 <li>
@@ -82,8 +108,66 @@
                 </li>
             {% endfor %}
             </ul>
+            <div class="pagination">
+                <span class="step-links">
+                    {% if join.has_previous %}
+                        <a href="?page_join=1">&laquo; first</a>
+                        <a href="?page_join={{ join.previous_page_number }}">previous</a>
+                    {% endif %}
+            
+                    <span class="current">
+                        Page {{ join.number }} of {{ join.paginator.num_pages }}.
+                    </span>
+            
+                    {% if join.has_next %}
+                        <a href="?page_join={{ join.next_page_number }}">next</a>
+                        <a href="?page_join={{ join.paginator.num_pages }}">last &raquo;</a>
+                    {% endif %}
+                </span>
+            </div>
         {% else %}
             No avaliable games to join
+        {% endif %}
+    </p>
+    <p><b><u>Games finished</u>:</b></p>
+    <p>
+        {% if replay %}
+            <ul>
+            {% for game in replay %}
+                <li>
+                    <a href="{% url 'select_game' game.id %}">
+                        <b>Game {{game.id}}</b>:
+                        {% if game.status == 3 %}
+                            Finished,
+                            {% if game.winner == 1 %}
+                                {{ game.mouse_user.username }} won.
+                            {% else %}
+                                you won.
+                            {% endif %}
+                        {% endif %}
+                    </a>
+                </li>
+            {% endfor %}
+            </ul>
+            <div class="pagination">
+                <span class="step-links">
+                    {% if replay.has_previous %}
+                        <a href="?page_replay=1">&laquo; first</a>
+                        <a href="?page_replay={{ replay.previous_page_number }}">previous</a>
+                    {% endif %}
+            
+                    <span class="current">
+                        Page {{ replay.number }} of {{ replay.paginator.num_pages }}.
+                    </span>
+            
+                    {% if replay.has_next %}
+                        <a href="?page_replay={{ replay.next_page_number }}">next</a>
+                        <a href="?page_replay={{ replay.paginator.num_pages }}">last &raquo;</a>
+                    {% endif %}
+                </span>
+            </div>
+        {% else %}
+            No finished games
         {% endif %}
     </p>
     <p id="return"><a href="{% url 'landing' %}">Home</a></p>
