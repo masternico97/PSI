@@ -4,172 +4,164 @@
 <div id="content">
     <h1>Select game</h1>
     <p><b><u>Games joined</u>:</b></p>
-    <p>
-        {% if as_cat %}
+    {% if as_cat %}
+        <p>
             Games as hounds:
             <ul>
-            {% for game in as_cat %}
-                <li>
-                    <a href="{% url 'select_game' game.id %}">
-                        <b>Game {{game.id}}</b>:
-                        {% if game.status == 2 %}
-                            Active,
-                            {% if game.cat_turn %}
-                                your
-                            {% else %}
-                                {{ game.mouse_user.username }}'s
+                {% for game in as_cat %}
+                    <li>
+                        <a href="{% url 'select_game' game.id %}">
+                            <b>Game {{game.id}}</b>:
+                            {% if game.status == 2 %}
+                                {% if game.cat_turn %}
+                                    Your
+                                {% else %}
+                                    {{ game.mouse_user.username }}'s
+                                {% endif %}
+                                turn.
                             {% endif %}
-                            turn.
-                        {% endif %}
-                    </a>
-                </li>
-            {% endfor %}
+                        </a>
+                    </li>
+                {% endfor %}
             </ul>
-            <div class="pagination">
-                <span class="step-links">
-                    {% if as_cat.has_previous %}
-                        <a href="?page_as_cat=1">&laquo; first</a>
-                        <a href="?page_as_cat={{ as_cat.previous_page_number }}">previous</a>
-                    {% endif %}
-            
-                    <span class="current">
-                        Page {{ as_cat.number }} of {{ as_cat.paginator.num_pages }}.
-                    </span>
-            
-                    {% if as_cat.has_next %}
-                        <a href="?page_as_cat={{ as_cat.next_page_number }}">next</a>
-                        <a href="?page_as_cat={{ as_cat.paginator.num_pages }}">last &raquo;</a>
-                    {% endif %}
+        </p>
+        <div class="pagination">
+            <span class="step-links">
+                {% if as_cat.has_previous %}
+                    <a class="page_link" href="?page_as_cat=1">&laquo; first</a>
+                    <a class="page_link" href="?page_as_cat={{ as_cat.previous_page_number }}">previous</a>
+                {% endif %}
+
+                <span class="current">
+                    Page {{ as_cat.number }} of {{ as_cat.paginator.num_pages }}.
                 </span>
-            </div>
-        {% else %}
-            No games as hounds
-        {% endif %}
-    </p>
-    <p>
-        {% if as_mouse %}
+
+                {% if as_cat.has_next %}
+                    <a class="page_link" href="?page_as_cat={{ as_cat.next_page_number }}">next</a>
+                    <a class="page_link" href="?page_as_cat={{ as_cat.paginator.num_pages }}">last &raquo;</a>
+                {% endif %}
+            </span>
+        </div>
+    {% else %}
+        No games as hounds
+    {% endif %}
+    {% if as_mouse %}
+        <p>
             Games as fox:
             <ul>
-            {% for game in as_mouse %}
-                <li>
-                    <a href="{% url 'select_game' game.id %}">
-                        <b>Game {{game.id}}</b>:
-                        {% if game.status == 2 %}
-                            Active,
-                            {% if game.cat_turn %}
-                                {{ game.cat_user.username }}'s
+                {% for game in as_mouse %}
+                    <li>
+                        <a href="{% url 'select_game' game.id %}">
+                            <b>Game {{game.id}}</b>:
+                            {% if game.status == 2 %}
+                                {% if game.cat_turn %}
+                                    {{ game.cat_user.username }}'s
+                                {% else %}
+                                    Your
+                                {% endif %}
+                                turn.
                             {% else %}
-                                your
+                                {% if game.winner == 1 %}
+                                    You won playing as Fox against {{ game.cat_user.username }}.
+                                {% else %}
+                                    {{ game.cat_user.username }} won playing as Hounds.
+                                {% endif %}
                             {% endif %}
-                            turn.
-                        {% else %}
-                            Finished,
-                            {% if game.winner == 1 %}
-                                you won.
-                            {% else %}
-                                {{ game.cat_user.username }} won.
-                            {% endif %}
-                        {% endif %}
-                    </a>
-                </li>
-            {% endfor %}
+                        </a>
+                    </li>
+                {% endfor %}
             </ul>
-            <div class="pagination">
-                <span class="step-links">
-                    {% if as_mouse.has_previous %}
-                        <a href="?page_as_mouse=1">&laquo; first</a>
-                        <a href="?page_as_mouse={{ as_mouse.previous_page_number }}">previous</a>
-                    {% endif %}
-            
-                    <span class="current">
-                        Page {{ as_mouse.number }} of {{ as_mouse.paginator.num_pages }}.
-                    </span>
-            
-                    {% if as_mouse.has_next %}
-                        <a href="?page_as_mouse={{ as_mouse.next_page_number }}">next</a>
-                        <a href="?page_as_mouse={{ as_mouse.paginator.num_pages }}">last &raquo;</a>
-                    {% endif %}
+        </p>
+        <div class="pagination">
+            <span class="step-links">
+                {% if as_mouse.has_previous %}
+                    <a class="page_link" href="?page_as_mouse=1">&laquo; first</a>
+                    <a class="page_link" href="?page_as_mouse={{ as_mouse.previous_page_number }}">previous</a>
+                {% endif %}
+
+                <span class="current">
+                    Page {{ as_mouse.number }} of {{ as_mouse.paginator.num_pages }}.
                 </span>
-            </div>
-        {% else %}
-            No games as fox
-        {% endif %}
-    </p>
+
+                {% if as_mouse.has_next %}
+                    <a class="page_link" href="?page_as_mouse={{ as_mouse.next_page_number }}">next</a>
+                    <a class="page_link" href="?page_as_mouse={{ as_mouse.paginator.num_pages }}">last &raquo;</a>
+                {% endif %}
+            </span>
+        </div>
+    {% else %}
+        No games as fox
+    {% endif %}
     <p><b><u>Games to join</u>:</b></p>
-    <p>
-        {% if join %}
+    {% if join %}
+        <p>
             <ul>
             {% for game in join %}
                 <li>
                     <a href="{% url 'select_game' game.id %}">
                         <b>Game {{game.id}}</b>:
-                        Created, Hounds' turn.
+                        Created by {{ game.cat_user.username }}. Waiting for someone to join...
                     </a>
                 </li>
             {% endfor %}
             </ul>
-            <div class="pagination">
-                <span class="step-links">
-                    {% if join.has_previous %}
-                        <a href="?page_join=1">&laquo; first</a>
-                        <a href="?page_join={{ join.previous_page_number }}">previous</a>
-                    {% endif %}
-            
-                    <span class="current">
-                        Page {{ join.number }} of {{ join.paginator.num_pages }}.
-                    </span>
-            
-                    {% if join.has_next %}
-                        <a href="?page_join={{ join.next_page_number }}">next</a>
-                        <a href="?page_join={{ join.paginator.num_pages }}">last &raquo;</a>
-                    {% endif %}
+        </p>
+        <div class="pagination">
+            <span class="step-links">
+                {% if join.has_previous %}
+                    <a class="page_link" href="?page_join=1">&laquo; first</a>
+                    <a class="page_link" href="?page_join={{ join.previous_page_number }}">previous</a>
+                {% endif %}
+                <span class="current">
+                    Page {{ join.number }} of {{ join.paginator.num_pages }}.
                 </span>
-            </div>
+                {% if join.has_next %}
+                    <a class="page_link" href="?page_join={{ join.next_page_number }}">next</a>
+                    <a class="page_link" href="?page_join={{ join.paginator.num_pages }}">last &raquo;</a>
+                {% endif %}
+            </span>
+        </div>
         {% else %}
             No avaliable games to join
         {% endif %}
-    </p>
     <p><b><u>Games finished</u>:</b></p>
-    <p>
-        {% if replay %}
+    {% if replay %}
+        <p>
             <ul>
             {% for game in replay %}
                 <li>
                     <a href="{% url 'select_game' game.id %}">
                         <b>Game {{game.id}}</b>:
                         {% if game.status == 3 %}
-                            Finished,
                             {% if game.winner == 1 %}
-                                {{ game.mouse_user.username }} won.
+                                {{ game.mouse_user.username }} won playing as Fox.
                             {% else %}
-                                you won.
+                                You won playing as Hounds against {{ game.mouse_user.username }}.
                             {% endif %}
                         {% endif %}
                     </a>
                 </li>
             {% endfor %}
             </ul>
-            <div class="pagination">
-                <span class="step-links">
-                    {% if replay.has_previous %}
-                        <a href="?page_replay=1">&laquo; first</a>
-                        <a href="?page_replay={{ replay.previous_page_number }}">previous</a>
-                    {% endif %}
-            
-                    <span class="current">
-                        Page {{ replay.number }} of {{ replay.paginator.num_pages }}.
-                    </span>
-            
-                    {% if replay.has_next %}
-                        <a href="?page_replay={{ replay.next_page_number }}">next</a>
-                        <a href="?page_replay={{ replay.paginator.num_pages }}">last &raquo;</a>
-                    {% endif %}
+        </p>
+        <div class="pagination">
+            <span class="step-links">
+                {% if replay.has_previous %}
+                    <a class="page_link" href="?page_replay=1">&laquo; first</a>
+                    <a class="page_link" href="?page_replay={{ replay.previous_page_number }}">previous</a>
+                {% endif %}
+                <span class="current">
+                    Page {{ replay.number }} of {{ replay.paginator.num_pages }}.
                 </span>
-            </div>
+                {% if replay.has_next %}
+                    <a class="page_link" href="?page_replay={{ replay.next_page_number }}">next</a>
+                    <a class="page_link" href="?page_replay={{ replay.paginator.num_pages }}">last &raquo;</a>
+                {% endif %}
+            </span>
+        </div>
         {% else %}
             No finished games
         {% endif %}
-    </p>
     <p id="return"><a href="{% url 'landing' %}">Home</a></p>
 </div>
 {% endblock content %}
