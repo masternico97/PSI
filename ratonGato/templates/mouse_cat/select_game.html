@@ -28,8 +28,8 @@
             <div class="pagination">
                 <span class="step-links">
                     {% if as_cat.has_previous %}
-                        <a href="?page_as_cat=1">&laquo; first</a>
-                        <a href="?page_as_cat={{ as_cat.previous_page_number }}">previous</a>
+                        <a href="?page_as_cat=1&page_as_mouse={{ as_mouse.number }}&page_join={{ join.number }}&page_replay={{ replay.number }}">&laquo; first</a>
+                        <a href="?page_as_cat={{ as_cat.previous_page_number }}&page_as_mouse={{ as_mouse.number }}&page_join={{ join.number }}&page_replay={{ replay.number }}">previous</a>
                     {% endif %}
             
                     <span class="current">
@@ -37,8 +37,8 @@
                     </span>
             
                     {% if as_cat.has_next %}
-                        <a href="?page_as_cat={{ as_cat.next_page_number }}">next</a>
-                        <a href="?page_as_cat={{ as_cat.paginator.num_pages }}">last &raquo;</a>
+                        <a href="?page_as_cat={{ as_cat.next_page_number }}&page_as_mouse={{ as_mouse.number }}&page_join={{ join.number }}&page_replay={{ replay.number }}">next</a>
+                        <a href="?page_as_cat={{ as_cat.paginator.num_pages }}&page_as_mouse={{ as_mouse.number }}&page_join={{ join.number }}&page_replay={{ replay.number }}">last &raquo;</a>
                     {% endif %}
                 </span>
             </div>
@@ -77,8 +77,8 @@
             <div class="pagination">
                 <span class="step-links">
                     {% if as_mouse.has_previous %}
-                        <a href="?page_as_mouse=1">&laquo; first</a>
-                        <a href="?page_as_mouse={{ as_mouse.previous_page_number }}">previous</a>
+                        <a href="?page_as_mouse=1&page_as_cat={{ as_cat.number }}&page_join={{ join.number }}&page_replay={{ replay.number }}">&laquo; first</a>
+                        <a href="?page_as_mouse={{ as_mouse.previous_page_number }}&page_as_cat={{ as_cat.number }}&page_join={{ join.number }}&page_replay={{ replay.number }}">previous</a>
                     {% endif %}
             
                     <span class="current">
@@ -86,8 +86,8 @@
                     </span>
             
                     {% if as_mouse.has_next %}
-                        <a href="?page_as_mouse={{ as_mouse.next_page_number }}">next</a>
-                        <a href="?page_as_mouse={{ as_mouse.paginator.num_pages }}">last &raquo;</a>
+                        <a href="?page_as_mouse={{ as_mouse.next_page_number }}&page_as_cat={{ as_cat.number }}&page_join={{ join.number }}&page_replay={{ replay.number }}">next</a>
+                        <a href="?page_as_mouse={{ as_mouse.paginator.num_pages }}&page_as_cat={{ as_cat.number }}&page_join={{ join.number }}&page_replay={{ replay.number }}">last &raquo;</a>
                     {% endif %}
                 </span>
             </div>
@@ -111,8 +111,8 @@
             <div class="pagination">
                 <span class="step-links">
                     {% if join.has_previous %}
-                        <a href="?page_join=1">&laquo; first</a>
-                        <a href="?page_join={{ join.previous_page_number }}">previous</a>
+                        <a href="?page_join=1&page_as_cat={{ as_cat.number }}&page_as_mouse={{ as_mouse.number }}&page_replay={{ replay.number }}">&laquo; first</a>
+                        <a href="?page_join={{ join.previous_page_number }}&page_as_cat={{ as_cat.number }}&page_as_mouse={{ as_mouse.number }}&page_replay={{ replay.number }}">previous</a>
                     {% endif %}
             
                     <span class="current">
@@ -120,8 +120,8 @@
                     </span>
             
                     {% if join.has_next %}
-                        <a href="?page_join={{ join.next_page_number }}">next</a>
-                        <a href="?page_join={{ join.paginator.num_pages }}">last &raquo;</a>
+                        <a href="?page_join={{ join.next_page_number }}&page_as_cat={{ as_cat.number }}&page_as_mouse={{ as_mouse.number }}&page_replay={{ replay.number }}">next</a>
+                        <a href="?page_join={{ join.paginator.num_pages }}&page_as_cat={{ as_cat.number }}&page_as_mouse={{ as_mouse.number }}&page_replay={{ replay.number }}">last &raquo;</a>
                     {% endif %}
                 </span>
             </div>
@@ -152,8 +152,8 @@
             <div class="pagination">
                 <span class="step-links">
                     {% if replay.has_previous %}
-                        <a href="?page_replay=1">&laquo; first</a>
-                        <a href="?page_replay={{ replay.previous_page_number }}">previous</a>
+                        <a href="?page_replay=1&page_as_cat={{ as_cat.number }}&page_as_mouse={{ as_mouse.number }}&page_join={{ join.number }}">&laquo; first</a>
+                        <a href="?page_replay={{ replay.previous_page_number }}&page_as_cat={{ as_cat.number }}&page_as_mouse={{ as_mouse.number }}&page_join={{ join.number }}">previous</a>
                     {% endif %}
             
                     <span class="current">
@@ -161,8 +161,8 @@
                     </span>
             
                     {% if replay.has_next %}
-                        <a href="?page_replay={{ replay.next_page_number }}">next</a>
-                        <a href="?page_replay={{ replay.paginator.num_pages }}">last &raquo;</a>
+                        <a href="?page_replay={{ replay.next_page_number }}&page_as_cat={{ as_cat.number }}&page_as_mouse={{ as_mouse.number }}&page_join={{ join.number }}">next</a>
+                        <a href="?page_replay={{ replay.paginator.num_pages }}&page_as_cat={{ as_cat.number }}&page_as_mouse={{ as_mouse.number }}&page_join={{ join.number }}">last &raquo;</a>
                     {% endif %}
                 </span>
             </div>

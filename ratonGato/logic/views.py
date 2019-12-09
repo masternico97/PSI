@@ -154,23 +154,26 @@ def select_game(request, game_id=None):
             if(game.cat_user == request.user
                or game.mouse_user == request.user):
 
+                
+                context_dict = {"move_form":
+                                MoveForm(request.POST or None)}
+                request.session["game_selected"] = game_id
+                context_dict["game"] = game
+
+                board = [0 for i in range(64)]
+                board[game.cat1] = 1
+                board[game.cat2] = 1
+                board[game.cat3] = 1
+                board[game.cat4] = 1
+                board[game.mouse] = -1
+                context_dict["board"] = board
+                context_dict["counter_globa"
+                                "l"] = Counter.objects.get_current_value()
                 if(game.status == GameStatus.ACTIVE):
-                    context_dict = {"move_form":
-                                    MoveForm(request.POST or None)}
-                    request.session["game_selected"] = game_id
-                    context_dict["game"] = game
-
-                    board = [0 for i in range(64)]
-                    board[game.cat1] = 1
-                    board[game.cat2] = 1
-                    board[game.cat3] = 1
-                    board[game.cat4] = 1
-                    board[game.mouse] = -1
-                    context_dict["board"] = board
-                    context_dict["counter_globa"
-                                 "l"] = Counter.objects.get_current_value()
-
                     return render(request, "mouse_cat/game.html", context_dict)
+                elif(game.status == GameStatus.FINISHED):
+                    return render(request, "mouse_cat/replay.html", context_dict)
+
         retorno = errorHTTP(request, "Game does not exist")
         retorno.status_code = 404
         return retorno
@@ -199,7 +202,7 @@ def select_game(request, game_id=None):
 
         page_as_cat = request.GET.get('page_as_cat')
         context_dict["as_cat"] = paginator_as_cat.get_page(page_as_cat)
-        page_as_mouse = request.GET.get('as_mouse')
+        page_as_mouse = request.GET.get('page_as_mouse')
         context_dict["as_mouse"] = paginator_as_mouse.get_page(page_as_mouse)
         page_join = request.GET.get('page_join')
         context_dict["join"] = paginator_join.get_page(page_join)
@@ -289,3 +292,10 @@ def move(request):
                 context_dict["board"] = board
 
                 return render(request, "mouse_cat/game.html", context_dict)
+
+@login_required(login_url='login')
+def get_move(request):
+    if request.method == 'GET':
+        retorno = errorHTTP(request, "GET not allowed")
+        retorno.status_code = 404
+        return retorno
