@@ -22,6 +22,11 @@
                             turn.
                         {% else %}
                             Finished,
+                            {% if game.winner == 1 %}
+                                Fox won.
+                            {% else %}
+                                You won.
+                            {% endif %}
                         {% endif %}
                     </a>
                 </li>
@@ -49,6 +54,11 @@
                             turn.
                         {% else %}
                             Finished,
+                            {% if game.winner == 1 %}
+                                You won.
+                            {% else %}
+                                Hounds won.
+                            {% endif %}
                         {% endif %}
                     </a>
                 </li>

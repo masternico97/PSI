@@ -22,6 +22,20 @@ class GameStatus(IntEnum):
         return switcher.get(i, "Invalid status")
 
 
+class GameWinner(IntEnum):
+    NONE = 0
+    MOUSE = 1
+    CATS = 2
+
+    def get_name(i):
+        switcher = {
+            0: 'None',
+            1: 'Mouse',
+            2: 'Cats',
+        }
+        return switcher.get(i, "Invalid winner")
+
+
 class Game(models.Model):
     MIN_CELL = 0
     MAX_CELL = 63
@@ -51,6 +65,8 @@ class Game(models.Model):
     cat_turn = models.BooleanField(default=True)
 
     status = models.IntegerField(default=GameStatus.CREATED)
+
+    winner = models.IntegerField(default=GameWinner.NONE)
 
     # Auxiliary function to decrease code repetition
     def get_correct_position(self, value):
@@ -139,23 +155,23 @@ class Move(models.Model):
         return list
 
     def finish(self):
-        finished = False
+        finished = 0
 
         # If mouse gets to any of this places, it wins
         top_line = [0, 2, 4, 6]
         if self.game.mouse in top_line:
-            finished = True
+            finished = 1
 
         # If mouse has nowhere to move, it loses
         elif(not self.mouse_posibilities(self.game.mouse)):
-            finished = True
+            finished = 2
 
         # If all cats are out of movements, cat player loses
         elif(not self.cat_posibilities(self.game.cat1)
              and not self.cat_posibilities(self.game.cat2)
              and not self.cat_posibilities(self.game.cat3)
              and not self.cat_posibilities(self.game.cat4)):
-            finished = True
+            finished = 1
 
         # If mouse is above every cat, cats can't stop it from
         # getting to the top, so it automatically wins
@@ -163,10 +179,14 @@ class Move(models.Model):
              self.game.mouse < self.game.cat2 and
              self.game.mouse < self.game.cat3 and
              self.game.mouse < self.game.cat4):
-            finished = True
+            finished = 1
 
-        if finished:
+        if finished != 0:
             self.game.status = GameStatus.FINISHED
+            if finished == 1:
+                self.game.winner = GameWinner.MOUSE
+            else:
+                self.game.winner = GameWinner.CATS
         self.game.save()
         return finished
 

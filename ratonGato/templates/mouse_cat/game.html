@@ -28,7 +28,30 @@
                     </b>
                 </p>
             </div>
-            {% if game.cat_user.id == request.user.id %}
+        </div>
+    <div id="board-text_wrapper">
+        {% if board %}
+            <table id="chess_board">
+            {% for item in board %}
+                {% if forloop.counter0|divisibleby:8 %}
+                    <tr>
+                {% endif %}
+                <td id="cell_{{ forloop.counter0 }}" ondrop="drop(event)" ondragover="allowDrop(event)">
+                    <div id="blank_cell_{{ forloop.counter0 }}" class="blank_cell">
+                    {% if item ==  0 %}
+                    {% elif item == 1 %}<img id="duck_hunt_{{ forloop.counter0 }}" class="draggable" ondragstart="drag(event)" src="{% static 'images/duck_hunt.png' %}" alt="Hound">
+                    {% else %}<img id="tails" class="draggable" ondragstart="drag(event)" src="{% static 'images/tails.png' %}" alt="Fox">
+                    {% endif %}
+                    </div>
+                </td>
+                {% if forloop.counter|divisibleby:8 or forloop.last %}
+                    </tr>
+                {% endif %}
+            {% endfor %}
+            </table>
+        {% endif %}
+        {% if game.cat_user.id == request.user.id %}
+            {% if game.status == 2 %}
                 {% if game.cat_turn %}
                     <form id="move_form" method="post" action="{% url 'move' %}">
                         {% csrf_token %}
@@ -38,13 +61,29 @@
                         </div>
                     </form>
                 {% else %}
-                    <div id="wait_message_div">
-                        <img src="{% static 'images/fox_wait.gif' %}" alt="Fox">
-                        <br>
-                        <p>The fox is playing, please wait for it.<a id="refresh_link" href="{% url 'show_game' %}">Refresh</a></p>
+                    <div class="content_wrapper">
+                        <div id="wait_message">
+                            <img src="{% static 'images/fox_wait.gif' %}" alt="Fox">
+                            <br>
+                            <p>The fox is playing, please wait for it.<a id="refresh_link" href="{% url 'show_game' %}">Refresh</a></p>
+                        </div>
                     </div>
                 {% endif %}
             {% else %}
+                <div class="content_wrapper">
+                    <p id="endgame_message_content">
+                        {% if game.winner == 1 %}
+                            You lost. Better luck nex time!
+                        {% else %}
+                            <img src="{% static 'images/fireworks.gif' %}" alt="Fireworks">
+                            You won! Congratulations!
+                            <img src="{% static 'images/fireworks.gif' %}" alt="Fireworks">
+                        {% endif %}
+                    </p>
+                </div>
+            {% endif %}
+        {% else %}
+            {% if game.status == 2 %}
                 {% if not game.cat_turn %}
                     <form id="move_form" method="post" action="{% url 'move' %}">
                         {% csrf_token %}
@@ -54,34 +93,29 @@
                         </div>
                     </form>
                 {% else %}
-                    <div id="wait_message_div">
-                        <img class="wait" src="{% static 'images/hound_wait.gif' %}" alt="Hounds">
-                        <br>
-                        <p class="chess_table_aligned">The hounds are playing, please wait for them.<a id="refresh_link" href="{% url 'show_game' %}">Refresh</a></p>
+                    <div class="content_wrapper">
+                        <div id="wait_message">
+                            <img src="{% static 'images/hound_wait.gif' %}" alt="Hounds">
+                            <br>
+                            <p>The hounds are playing, please wait for them.<a id="refresh_link" href="{% url 'show_game' %}">Refresh</a></p>
+                        </div>
                     </div>
                 {% endif %}
-            {% endif %}
-        </div>
-    {% if board %}
-        <table id="chess_board">
-        {% for item in board %}
-            {% if forloop.counter0|divisibleby:8 %}
-                <tr>
-            {% endif %}
-            <td id="cell_{{ forloop.counter0 }}" ondrop="drop(event)" ondragover="allowDrop(event)">
-                <div id="blank_cell_{{ forloop.counter0 }}" class="blank_cell">
-                {% if item ==  0 %}
-                {% elif item == 1 %}<img id="duck_hunt_{{ forloop.counter0 }}" class="draggable" ondragstart="drag(event)" src="{% static 'images/duck_hunt.png' %}" alt="Hound">
-                {% else %}<img id="tails" class="draggable" ondragstart="drag(event)" src="{% static 'images/tails.png' %}" alt="Fox">
-                {% endif %}
+            {% else %}
+                <div class="content_wrapper">
+                    <p id="endgame_message_content">
+                        {% if game.winner == 1 %}
+                            <img src="{% static 'images/fireworks.gif' %}" alt="Fireworks">
+                            You won! Congratulations!
+                            <img src="{% static 'images/fireworks.gif' %}" alt="Fireworks">
+                        {% else %}
+                            You lost. Better luck next time!
+                        {% endif %}
+                    </p>
                 </div>
-            </td>
-            {% if forloop.counter|divisibleby:8 or forloop.last %}
-                </tr>
             {% endif %}
-        {% endfor %}
-        </table>
-    {% endif %}
+        {% endif %}
+    </div>
     <p id="return"><a href="{% url 'landing' %}">Home</a></p>
 </div>
 {% endblock content %}

@@ -11,7 +11,7 @@
             <img id="alert_sign" src="{% static 'images/alert_sign.png' %}" alt="Alert Sign">
         </p>
     {% else %}
-        <p><b>{{ game.mouse_user.username }}</b> succesfully joined to game <b>{{ game.id }}</b>. The game can start!!!</p>
+        <p class="center"><b>{{ game.mouse_user.username }}</b> succesfully joined to game <b>{{ game.id }}</b>. The game can start!!!</p>
     {% endif %}
     <p id="return_center"><a href="{% url 'landing' %}">Home</a></p>
 </div>
