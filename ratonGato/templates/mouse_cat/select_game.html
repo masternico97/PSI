@@ -129,7 +129,7 @@
                     <a href="{% url 'select_game' game.id %}">
                         <b>Game {{game.id}}</b>:
                         {% if game.status == 3 %}
-                            {% if game.winner == 1 and %}
+                            {% if game.winner == 1 %}
                                 You lost playing against {{ game.mouse_user.username }}.
                             {% else %}
                                 You won playing against {{ game.mouse_user.username }}.
