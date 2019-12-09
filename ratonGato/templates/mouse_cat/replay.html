@@ -31,15 +31,9 @@
         </div>
     </div>
     <div id="replay_menu">
-        {% if shift >= 0 %}
-            <button class="replay_button" onclick="replay({{ shift }} - 1)" type="button"><<</button>
-        {% endif %}
-        {% if shift != max_shift %}
-            <button class="replay_button" onclick="replay({{ max_shift }})" type="button">AUTO</button>
-        {% endif %}
-        {% if shift < max_shift %}
-            <button class="replay_button" onclick="replay({{ shift }} + 1)" type="button">>></button>
-        {% endif %}
+        <button id="preview" class="replay_button" onclick="replay({{ shift }} - 1)" type="button"><<</button>
+        <button id="auto" class="replay_button" onclick="replay({{ max_shift }})" type="button">AUTO</button>
+        <button id="forward" class="replay_button" onclick="replay({{ shift }} + 1)" type="button">>></button>
     </div>
 
     <div id="board-text_wrapper">

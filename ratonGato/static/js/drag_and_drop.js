@@ -1,3 +1,8 @@
+/* 
+ * Function incharge of the drag and drop of the game 
+ * Author: Martin Salinas
+ */
+
 $(document).ready(function() {
 	var initial_position = -1;
 	var final_position = -1;

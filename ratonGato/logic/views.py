@@ -1,19 +1,17 @@
-from django.http import HttpResponseForbidden
-from django.shortcuts import render, redirect, reverse
-from datamodel import constants
-from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate
 from django.contrib.auth import login as django_login
 from django.contrib.auth import logout as django_logout
-from django.core.exceptions import ValidationError
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
 from django.core.paginator import Paginator
+from django.http import HttpResponseForbidden
 from django.http import JsonResponse
+from django.shortcuts import render, redirect, reverse
 
-
+from datamodel import constants
 # Import the models
 from datamodel.models import Counter, Game, GameStatus, Move
-
 # Import the forms
 from logic.forms import SignupForm, LoginForm, MoveForm
 
@@ -39,14 +37,36 @@ def errorHTTP(request, exception=None):
 
 # Create your views here.
 def index(request):
+    """
+    Displays home page.
+
+    Args:
+        request (HttpRequest): Metadata about the requested page
+
+    Returns:
+        render(...) (HttpResponse): Template information
+
+    Author:
+    """
     context_dict = {"counter_global": Counter.objects.get_current_value()}
     return render(request, "mouse_cat/index.html", context_dict)
 
 
 @anonymous_required
 def login(request):
-    context_dict = {"user_form": LoginForm(request.POST or None)}
-    context_dict["counter_global"] = Counter.objects.get_current_value()
+    """
+    Displays login menu or logs the user.
+
+    Args:
+        request (HttpRequest): Metadata about the requested page
+
+    Returns:
+        render(...) (HttpResponse): Template information
+
+    Author:
+    """
+    context_dict = {"user_form": LoginForm(request.POST or None),
+                    "counter_global": Counter.objects.get_current_value()}
     # The request is not a HTTP POST, so display the login form.
     if request.method == 'POST' and context_dict["user_form"].is_valid():
         data = context_dict["user_form"].clean()
@@ -69,6 +89,17 @@ def login(request):
 
 @login_required
 def logout(request):
+    """
+    Eliminates user from the session
+
+    Args:
+        request (HttpRequest): Metadata about the requested page
+
+    Returns:
+        render(...) (HttpResponse): Template information
+
+    Author:
+    """
     django_logout(request)
     context_dict = {"counter_global": Counter.objects.get_current_value()}
     return render(request, "mouse_cat/logout.html", context_dict)
@@ -76,8 +107,19 @@ def logout(request):
 
 @anonymous_required
 def signup(request):
-    context_dict = {"user_form": SignupForm(request.POST or None)}
-    context_dict["counter_global"] = Counter.objects.get_current_value()
+    """
+    Displays signup menu or registers the user in the database.
+
+    Args:
+        request (HttpRequest): Metadata about the requested page
+
+    Returns:
+        render(...) (HttpResponse): Template information
+
+    Author:
+    """
+    context_dict = {"user_form": SignupForm(request.POST or None),
+                    "counter_global": Counter.objects.get_current_value()}
     # The request is not a HTTP POST, so display the login form.
     if request.method == 'POST' and context_dict["user_form"].is_valid():
         data = context_dict["user_form"].clean()
@@ -120,6 +162,17 @@ def signup(request):
 
 @login_required(login_url='login')
 def create_game(request):
+    """
+    Creates a game.
+
+    Args:
+        request (HttpRequest): Metadata about the requested page
+
+    Returns:
+        render(...) (HttpResponse): Template information
+
+    Author:
+    """
     context_dict = {"game": Game(cat_user=request.user)}
     context_dict["game"].save()
     context_dict["counter_global"] = Counter.objects.get_current_value()
@@ -128,6 +181,17 @@ def create_game(request):
 
 @login_required(login_url='login')
 def join_game(request):
+    """
+    Joins to the CREATED game where you are not playing as cat with lower id.
+
+    Args:
+        request (HttpRequest): Metadata about the requested page
+
+    Returns:
+        render(...) (HttpResponse): Template information
+
+    Author:
+    """
     result = (Game.objects.
               filter(status=GameStatus.CREATED).
               exclude(cat_user=request.user).
@@ -144,19 +208,31 @@ def join_game(request):
 
 @login_required(login_url='login')
 def select_game(request, game_id=None):
+    """
+    Displays all the game or selects one.
+
+    Args:
+        request (HttpRequest): Metadata about the requested page
+        game_id (int): Id of the selected game
+
+    Returns:
+        retorno (HttpResponseForbidden): Error page
+        render(...) (HttpResponse): Template information
+
+    Author: Nicolas Serrano
+    """
     if game_id:
         game = Game.objects.filter(id=game_id)
-        if(game):
+        if game:
             game = game[0]
-            if(game.status == GameStatus.CREATED):
+            if game.status == GameStatus.CREATED:
                 game.mouse_user = request.user
                 game.save()
 
-            if(game.cat_user == request.user
-               or game.mouse_user == request.user):
+            if (game.cat_user == request.user
+                    or game.mouse_user == request.user):
 
-                context_dict = {"move_form":
-                                MoveForm(request.POST or None)}
+                context_dict = {"move_form": MoveForm(request.POST or None)}
                 request.session["game_selected"] = game_id
                 context_dict["game"] = game
 
@@ -168,13 +244,14 @@ def select_game(request, game_id=None):
                 board[game.mouse] = -1
                 context_dict["board"] = board
                 context_dict["counter_globa"
-                                "l"] = Counter.objects.get_current_value()
-                if(game.status == GameStatus.ACTIVE):
+                             "l"] = Counter.objects.get_current_value()
+                if game.status == GameStatus.ACTIVE:
                     return render(request, "mouse_cat/game.html", context_dict)
-                elif(game.status == GameStatus.FINISHED):
+                elif game.status == GameStatus.FINISHED:
                     context_dict["shift"] = game.moves.count()
                     context_dict["max_shift"] = game.moves.count()
-                    return render(request, "mouse_cat/replay.html", context_dict)
+                    return render(request, "mouse_cat/replay.html",
+                                  context_dict)
 
         retorno = errorHTTP(request, "Game does not exist")
         retorno.status_code = 404
@@ -194,9 +271,9 @@ def select_game(request, game_id=None):
         replay = ((Game.objects.
                    filter(cat_user=request.user).
                    filter(status=GameStatus.FINISHED))
-                  |(Game.objects.
-                    filter(mouse_user=request.user).
-                    filter(status=GameStatus.FINISHED)))
+                  | (Game.objects.
+                     filter(mouse_user=request.user).
+                     filter(status=GameStatus.FINISHED)))
         paginator_as_cat = Paginator(as_cat, 5)
         paginator_as_mouse = Paginator(as_mouse, 5)
         paginator_join = Paginator(join, 5)
@@ -209,8 +286,7 @@ def select_game(request, game_id=None):
         page_join = request.GET.get('page_join')
         context_dict["join"] = paginator_join.get_page(page_join)
         page_replay = request.GET.get('page_replay')
-        context_dict["replay"] = paginator_replay.get_page(page_replay) 
-        
+        context_dict["replay"] = paginator_replay.get_page(page_replay)
 
         context_dict["counter_global"] = Counter.objects.get_current_value()
 
@@ -219,14 +295,26 @@ def select_game(request, game_id=None):
 
 @login_required(login_url='login')
 def show_game(request):
+    """
+    Shows the game stored in the session.
+
+    Args:
+        request (HttpRequest): Metadata about the requested page
+
+    Returns:
+        retorno (HttpResponseForbidden): Error page
+        render(...) (HttpResponse): Template information
+
+    Author:
+    """
     game_selected = request.session.get("game_selected")
-    if(game_selected):
+    if game_selected:
         game = Game.objects.filter(id=game_selected)
         context_dict = {"move_form": MoveForm(request.POST or None)}
-        if(game):
+        if game:
             game = game[0]
-            if(game.cat_user == request.user
-               or game.mouse_user == request.user):
+            if (game.cat_user == request.user
+                    or game.mouse_user == request.user):
                 context_dict["game"] = game
 
                 board = [0 for i in range(64)]
@@ -249,6 +337,18 @@ def show_game(request):
 
 @login_required(login_url='login')
 def move(request):
+    """
+    Makes a movement.
+
+    Args:
+        request (HttpRequest): Metadata about the requested page
+
+    Returns:
+        retorno (HttpResponseForbidden): Error page
+        render(...) (HttpResponse): Template information
+
+    Author:
+    """
     if request.method == 'GET':
         retorno = errorHTTP(request, "GET not allowed")
         retorno.status_code = 404
@@ -271,17 +371,17 @@ def move(request):
             retorno.status_code = 404
             return retorno
 
-        if(game):
+        if game:
             game = game[0]
             try:
                 Move.objects.create(
-                        game=game, player=user, origin=origin, target=target)
+                    game=game, player=user, origin=origin, target=target)
             except ValidationError:
                 context_dict["move_form"].add_error("origin",
                                                     "Move not allowed")
 
-            if(game.cat_user == request.user
-               or game.mouse_user == request.user):
+            if (game.cat_user == request.user
+                    or game.mouse_user == request.user):
                 context_dict["game"] = game
 
                 board = [0 for i in range(64)]
@@ -295,8 +395,21 @@ def move(request):
 
                 return render(request, "mouse_cat/game.html", context_dict)
 
+
 @login_required(login_url='login')
 def get_move(request):
+    """
+    Returns next or preview movement.
+
+    Args:
+        request (HttpRequest): Metadata about the requested page
+
+    Returns:
+        retorno (HttpResponseForbidden): Error page
+        response_data (JsonResponse): Json with the information
+
+    Author:
+    """
     if request.method == 'GET':
         retorno = errorHTTP(request, "GET not allowed")
         retorno.status_code = 404
@@ -305,12 +418,12 @@ def get_move(request):
     if request.method == 'POST':
         shift = int(request.POST.get('shift'))
         game = Game.objects.filter(id=request.session["game_selected"])[0]
-        
+
         if shift < 0 or shift > game.moves.count():
             retorno = errorHTTP(request, "Replay not allowed")
             retorno.status_code = 404
             return retorno
-        
+
         response_data = {}
         movements = Move.objects.filter(game=game)
 
@@ -324,6 +437,5 @@ def get_move(request):
             response_data['previous'] = False
         else:
             response_data['previous'] = True
-        
+
         return JsonResponse(response_data)
-    
