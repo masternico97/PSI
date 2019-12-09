@@ -106,6 +106,18 @@ nav > p {
     font-weight: normal;
 }
 
+.page_link {
+    text-decoration: none;
+}
+
+.page_link:hover {
+    color: slateblue;
+}
+
+.page_link:visited {
+    color: blue;
+}
+
 /* Title square with logo */
 #title {
     width: 90%;
