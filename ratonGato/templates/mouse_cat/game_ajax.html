@@ -1,41 +1,4 @@
-{% extends "mouse_cat/base.html" %}
-{% load staticfiles %}
-
-{% block content %}
-{% if game.cat_user.id == request.user.id %}
-    {% if game.cat_turn %}
-        
-    {% else %}
-    {% endif %}
-{% endif %}
-<div id="content">
-    <h1>Play</h1>
-    <div id="game_wrapper">
-        <div id="game_data">
-            <p>Game: <b>{{ game.id }}</b></p>
-                <p>
-                    Hounds:
-                    <b>
-                        {% if game.cat_user.id == request.user.id %}
-                            You
-                        {% else %}
-                            {{ game.cat_user.username }}
-                        {% endif %}
-                    </b>
-                </p>
-                <p>
-                    Fox:
-                    <b>
-                        {% if game.mouse_user.id == request.user.id %}
-                            You
-                        {% else %}
-                            {{ game.mouse_user.username }}
-                        {% endif %}
-                    </b>
-                </p>
-            </div>
-        </div>
-    <div id="board-text_wrapper">
+<div id="board-text_wrapper">
         {% if board %}
             <table id="chess_board">
             {% for item in board %}
@@ -122,6 +85,3 @@
             {% endif %}
         {% endif %}
     </div>
-    <p id="return"><a href="{% url 'landing' %}">Home</a></p>
-</div>
-{% endblock content %}

@@ -6,6 +6,7 @@ django.setup()
 
 from django.contrib.auth.models import User
 from datamodel.models import Game, GameStatus, Move
+from django.db.models import Min
 
 
 if __name__ == '__main__':
@@ -38,7 +39,12 @@ if __name__ == '__main__':
     # Join the user with id=11 to the game with smaller id found
     # in the previous step, and start the game.
     # Print the found object typeGamein on-screen.
-    selectedGame = result1[0]
+    min_id = Game.objects.filter(status=GameStatus.CREATED).aggregate(Min('pk'))
+
+    result = Game.objects.filter(pk=min_id['pk__min'])
+
+    selectedGame = result[0]
+    
     selectedGame.mouse_user = user2
     selectedGame.save()
 

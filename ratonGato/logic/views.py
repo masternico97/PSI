@@ -8,6 +8,7 @@ from django.core.paginator import Paginator
 from django.http import HttpResponseForbidden
 from django.http import JsonResponse
 from django.shortcuts import render, redirect, reverse
+from django.db.models import Min
 
 from datamodel import constants
 # Import the models
@@ -192,16 +193,25 @@ def join_game(request):
 
     Author:
     """
-    result = (Game.objects.
-              filter(status=GameStatus.CREATED).
-              exclude(cat_user=request.user).
-              order_by('-id'))
-    if result:
-        context_dict = {"game": result[0]}
-        context_dict["game"].mouse_user = request.user
-        context_dict["game"].save()
+    min_id = (Game.objects.
+          filter(status=GameStatus.CREATED).
+          exclude(cat_user=request.user).
+          aggregate(Min('id')))
+
+    if min_id['id__min']:
+        result = (Game.objects.
+                  filter(id=min_id['id__min']))
+
+        if result:
+            context_dict = {"game": result[0]}
+            context_dict["game"].mouse_user = request.user
+            context_dict["game"].save()
+        else:
+            context_dict = {"msg_error": "There are no available games"}
+
     else:
         context_dict = {"msg_error": "There are no available games"}
+
     context_dict["counter_global"] = Counter.objects.get_current_value()
     return render(request, "mouse_cat/join_game.html", context_dict)
 
@@ -248,8 +258,7 @@ def select_game(request, game_id=None):
                 if game.status == GameStatus.ACTIVE:
                     return render(request, "mouse_cat/game.html", context_dict)
                 elif game.status == GameStatus.FINISHED:
-                    context_dict["shift"] = game.moves.count()
-                    context_dict["max_shift"] = game.moves.count()
+                    request.session["replay"] = 0
                     return render(request, "mouse_cat/replay.html",
                                   context_dict)
 
@@ -418,8 +427,10 @@ def get_move(request):
     if request.method == 'POST':
         shift = int(request.POST.get('shift'))
         game = Game.objects.filter(id=request.session["game_selected"])[0]
+        movement = request.session.get("replay", 0)
+        max_movements = game.moves.count() -1
 
-        if shift < 0 or shift > game.moves.count():
+        if (movement == 0 and shift == -1) and (shift == 1 and movement == max_movements):
             retorno = errorHTTP(request, "Replay not allowed")
             retorno.status_code = 404
             return retorno
@@ -427,15 +438,29 @@ def get_move(request):
         response_data = {}
         movements = Move.objects.filter(game=game)
 
-        response_data['origin'] = movements[shift].origin
-        response_data['target'] = movements[shift].target
-        if shift == game.moves.count():
-            response_data['next'] = False
-        else:
+        if shift == -1:
+            # The target is the origin of our backward movement
+            # and origin the target of our backward movement
+            movement -= 1
+            request.session["replay"] = movement
+
+            response_data['target'] = movements[movement].origin
+            response_data['origin'] = movements[movement].target
+            if movement == 0:
+                response_data['previous'] = False
+            else:
+                response_data['previous'] = True
             response_data['next'] = True
-        if shift == 0:
-            response_data['previous'] = False
-        else:
+
+        elif shift == 1:
+            response_data['target'] = movements[movement].target
+            response_data['origin'] = movements[movement].origin
+            if movement == max_movements:
+                response_data['next'] = False
+            else:
+                response_data['next'] = True
             response_data['previous'] = True
+            movement += 1
+            request.session["replay"] = movement
 
         return JsonResponse(response_data)

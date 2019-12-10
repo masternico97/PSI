@@ -58,28 +58,27 @@
             </table>
         {% endif %}
 
-        {% if shift == max_shift %}
-            <div class="content_wrapper">
-                <p id="endgame_message_content">
-                    {% if game.cat_user.id == request.user.id %}
-                        {% if game.winner == 1 %}
-                            You lost. Better luck nex time!
-                        {% else %}
-                            <img src="{% static 'images/fireworks.gif' %}" alt="Fireworks">
-                            You won! Congratulations!
-                            <img src="{% static 'images/fireworks.gif' %}" alt="Fireworks">
-                        {% endif %}
+        <div class="content_wrapper">
+            <p id="endgame_message_content">
+                {% if game.cat_user.id == request.user.id %}
+                    {% if game.winner == 1 %}
+                        You lost. Better luck nex time!
                     {% else %}
-                        {% if game.winner == 1 %}
-                            <img src="{% static 'images/fireworks.gif' %}" alt="Fireworks">
-                            You won! Congratulations!
-                            <img src="{% static 'images/fireworks.gif' %}" alt="Fireworks">
-                        {% else %}
-                            You lost. Better luck next time!
-                        {% endif %}
+                        <img src="{% static 'images/fireworks.gif' %}" alt="Fireworks">
+                        You won! Congratulations!
+                        <img src="{% static 'images/fireworks.gif' %}" alt="Fireworks">
                     {% endif %}
-                </p>
-            </div>
+                {% else %}
+                    {% if game.winner == 1 %}
+                        <img src="{% static 'images/fireworks.gif' %}" alt="Fireworks">
+                        You won! Congratulations!
+                        <img src="{% static 'images/fireworks.gif' %}" alt="Fireworks">
+                    {% else %}
+                        You lost. Better luck next time!
+                    {% endif %}
+                {% endif %}
+            </p>
+        </div>
         {% endif %}
     </div>
     <p id="return"><a href="{% url 'landing' %}">Home</a></p>

@@ -35,3 +35,22 @@ $(document).ready(function() {
 function replay(s){
 	alert(s);
 }
+
+/* <script type="text/javascript">
+	function refresh() {
+		$.ajax({
+			type: "GET",
+			url: {% url 'game' %},
+			error: function(returnval) {
+				$(".message").text(returnval + " failure");
+			},
+			success: function (return_data) {
+				if () {
+
+				}
+				$("#board-text_wrapper").html(return_data);
+
+			}
+		})
+	}
+</script> */
