@@ -219,6 +219,28 @@ nav > p {
     width: 25%;
 }
 
+/* Replay buttons */
+#replay_menu {
+    width: 514px;
+    text-align: center;
+}
+
+#replay_menu button {
+    background-color: #2C93B9;
+    color: white;
+    padding: 5px 10px;
+    margin: 8px 0px;
+    margin-top: 0px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+#replay_menu button:hover {
+    background-color: #237694;
+    cursor: pointer;
+}
+
 /* Move form in game page */
 #move_form {
     position: relative;
@@ -283,12 +305,16 @@ nav > p {
 
 /* Chess board in game page */
 #chess_board {
-    table-layout: fixed;
+    border-collapse: collapse;
+}
+
+#chess_board: after {
+    padding-bottom: 100%;
 }
 
 #chess_board td {
-    width: 60px;
-    height: 60px;
+    width: calc(50% / 8);
+    padding-bottom: 100%;
     border: 1px solid #000000;
     text-align: center;
     padding: 0px;

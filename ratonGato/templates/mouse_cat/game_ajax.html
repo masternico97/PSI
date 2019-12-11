@@ -21,23 +21,13 @@
         {% endif %}
         {% if game.cat_user.id == request.user.id %}
             {% if game.status == 2 %}
-                {% if game.cat_turn %}
-                    <form id="move_form" method="post" action="{% url 'move' %}">
-                        {% csrf_token %}
-                        <div id="game_error_wrapper">
-                            {{ move_form }}
-                            <input id="move_button" type="submit" value="Move">
-                        </div>
-                    </form>
-                {% else %}
-                    <div class="content_wrapper">
-                        <div id="wait_message">
-                            <img src="{% static 'images/fox_wait.gif' %}" alt="Fox">
-                            <br>
-                            <p>The fox is playing, please wait for it.<a id="refresh_link" href="{% url 'show_game' %}">Refresh</a></p>
-                        </div>
+                <div class="content_wrapper">
+                    <div id="wait_message">
+                        <img src="{% static 'images/fox_wait.gif' %}" alt="Fox">
+                        <br>
+                        <p>The fox is playing, please wait for it.<a id="refresh_link" href="{% url 'show_game' %}">Refresh</a></p>
                     </div>
-                {% endif %}
+                </div>
             {% else %}
                 <div class="content_wrapper">
                     <p id="endgame_message_content">
@@ -53,23 +43,13 @@
             {% endif %}
         {% else %}
             {% if game.status == 2 %}
-                {% if not game.cat_turn %}
-                    <form id="move_form" method="post" action="{% url 'move' %}">
-                        {% csrf_token %}
-                        <div id="game_error_wrapper">
-                            {{ move_form }}
-                            <input id="move_button" type="submit" value="Move">
-                        </div>
-                    </form>
-                {% else %}
-                    <div class="content_wrapper">
-                        <div id="wait_message">
-                            <img src="{% static 'images/hound_wait.gif' %}" alt="Hounds">
-                            <br>
-                            <p>The hounds are playing, please wait for them.<a id="refresh_link" href="{% url 'show_game' %}">Refresh</a></p>
-                        </div>
+                <form id="move_form" method="post" action="{% url 'move' %}">
+                    {% csrf_token %}
+                    <div id="game_error_wrapper">
+                        {{ move_form }}
+                        <input id="move_button" type="submit" value="Move">
                     </div>
-                {% endif %}
+                </form>
             {% else %}
                 <div class="content_wrapper">
                     <p id="endgame_message_content">

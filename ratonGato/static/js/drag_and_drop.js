@@ -1,5 +1,5 @@
-/* 
- * Function incharge of the drag and drop of the game 
+/*
+ * Function incharge of the drag and drop of the game
  * Author: Martin Salinas
  */
 
@@ -31,22 +31,3 @@ $(document).ready(function() {
 		}
 	});
 });
-
-/* <script type="text/javascript">
-	function refresh() {
-		$.ajax({
-			type: "GET",
-			url: {% url 'game' %},
-			error: function(returnval) {
-				$(".message").text(returnval + " failure");
-			},
-			success: function (return_data) {
-				if () {
-
-				}
-				$("#board-text_wrapper").html(return_data);
-
-			}
-		})
-	}
-</script> */
