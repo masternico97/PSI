@@ -374,6 +374,24 @@ nav > p {
     padding-left: 10%;
 }
 
+/* Replay items visibility */
+#replay_end {
+    visibility: hidden;
+}
+
+#preview {
+    visibility: hidden;
+}
+
+#auto {
+    visibility: visible;
+}
+
+#forward {
+    visibility: visible;
+}
+
+
 /* ------------- Footer div ------------- */
 
 footer {

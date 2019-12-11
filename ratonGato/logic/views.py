@@ -242,23 +242,32 @@ def select_game(request, game_id=None):
             if (game.cat_user == request.user
                     or game.mouse_user == request.user):
 
-                context_dict = {"move_form": MoveForm(request.POST or None)}
                 request.session["game_selected"] = game_id
+                context_dict = {}
                 context_dict["game"] = game
 
-                board = [0 for i in range(64)]
-                board[game.cat1] = 1
-                board[game.cat2] = 1
-                board[game.cat3] = 1
-                board[game.cat4] = 1
-                board[game.mouse] = -1
-                context_dict["board"] = board
                 context_dict["counter_globa"
                              "l"] = Counter.objects.get_current_value()
                 if game.status == GameStatus.ACTIVE:
+                    context_dict["move_form"] = MoveForm(request.POST or None)
+                    board = [0 for i in range(64)]
+                    board[game.cat1] = 1
+                    board[game.cat2] = 1
+                    board[game.cat3] = 1
+                    board[game.cat4] = 1
+                    board[game.mouse] = -1
+                    context_dict["board"] = board
                     return render(request, "mouse_cat/game.html", context_dict)
                 elif game.status == GameStatus.FINISHED:
                     request.session["replay"] = 0
+                    # We return the pieces to the initial position
+                    board = [0 for i in range(64)]
+                    board[0] = 1
+                    board[2] = 1
+                    board[4] = 1
+                    board[6] = 1
+                    board[59] = -1
+                    context_dict["board"] = board
                     return render(request, "mouse_cat/replay.html",
                                   context_dict)
 
@@ -319,25 +328,37 @@ def show_game(request):
     game_selected = request.session.get("game_selected")
     if game_selected:
         game = Game.objects.filter(id=game_selected)
-        context_dict = {"move_form": MoveForm(request.POST or None)}
         if game:
+            context_dict = {}
             game = game[0]
             if (game.cat_user == request.user
                     or game.mouse_user == request.user):
                 context_dict["game"] = game
-
-                board = [0 for i in range(64)]
-                board[game.cat1] = 1
-                board[game.cat2] = 1
-                board[game.cat3] = 1
-                board[game.cat4] = 1
-                board[game.mouse] = -1
-
-                context_dict["board"] = board
                 context_dict["counter_globa"
                              "l"] = Counter.objects.get_current_value()
+                if game.status == GameStatus.ACTIVE:
+                    context_dict["move_form"] = MoveForm(request.POST or None)
+                    board = [0 for i in range(64)]
+                    board[game.cat1] = 1
+                    board[game.cat2] = 1
+                    board[game.cat3] = 1
+                    board[game.cat4] = 1
+                    board[game.mouse] = -1
+                    context_dict["board"] = board
+                    return render(request, "mouse_cat/game.html", context_dict)
 
-                return render(request, "mouse_cat/game.html", context_dict)
+                elif game.status == GameStatus.FINISHED:
+                    request.session["replay"] = 0
+                    # We return the pieces to the initial position
+                    board = [0 for i in range(64)]
+                    board[0] = 1
+                    board[2] = 1
+                    board[4] = 1
+                    board[6] = 1
+                    board[59] = -1
+                    context_dict["board"] = board
+                    return render(request, "mouse_cat/replay.html",
+                                  context_dict)
 
     retorno = errorHTTP(request, "No game selected")
     retorno.status_code = 404

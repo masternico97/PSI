@@ -32,10 +32,6 @@ $(document).ready(function() {
 	});
 });
 
-function replay(s){
-	alert(s);
-}
-
 /* <script type="text/javascript">
 	function refresh() {
 		$.ajax({

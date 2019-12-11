@@ -31,9 +31,9 @@
         </div>
     </div>
     <div id="replay_menu">
-        <button id="preview" class="replay_button" onclick="replay({{ shift }} - 1)" type="button"><<</button>
-        <button id="auto" class="replay_button" onclick="replay({{ max_shift }})" type="button">AUTO</button>
-        <button id="forward" class="replay_button" onclick="replay({{ shift }} + 1)" type="button">>></button>
+        <button id="preview" class="replay_button" onclick="replay(-1)" type="button"><<</button>
+        <button id="auto" class="replay_button" onclick="replay(0)" type="button">AUTO</button>
+        <button id="forward" class="replay_button" onclick="replay(1)" type="button">>></button>
     </div>
 
     <div id="board-text_wrapper">
@@ -58,7 +58,7 @@
             </table>
         {% endif %}
 
-        <div class="content_wrapper">
+        <div class="content_wrapper" id="replay_end">
             <p id="endgame_message_content">
                 {% if game.cat_user.id == request.user.id %}
                     {% if game.winner == 1 %}
@@ -79,7 +79,6 @@
                 {% endif %}
             </p>
         </div>
-        {% endif %}
     </div>
     <p id="return"><a href="{% url 'landing' %}">Home</a></p>
 </div>

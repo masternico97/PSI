@@ -10,6 +10,43 @@
         <script src="https://kit.fontawesome.com/a076d05399.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
         <script type="text/javascript" src="{% static 'js/drag_and_drop.js' %}"></script>
+
+        <script>
+            function replay(s){
+                if(s != 0){
+                    $.ajax({
+                        url: "{% url 'get_move' %}",
+                        type: "POST",
+                        data: {
+                            shift: s,
+                            csrfmiddlewaretoken: '{{ csrf_token }}',
+                        },
+                        success: function (data) {
+                            let origin = "blank_cell_"+data.origin
+                            let target = "blank_cell_"+data.target
+                            let previous = data.previous
+                            let next = data.next
+                            if(previous === true){
+                                document.getElementById("preview").style.visibility = "visible";
+                            } else {
+                                document.getElementById("preview").style.visibility = "hidden";
+                            }
+                            if(next === true){
+                                document.getElementById("forward").style.visibility = "visible";
+                                document.getElementById("replay_end").style.visibility = "hidden";
+                            } else {
+                                document.getElementById("forward").style.visibility = "hidden";
+                                document.getElementById("replay_end").style.visibility = "visible";
+                            }
+                            document.getElementById(target).innerHTML = document.getElementById(origin).innerHTML;
+                            document.getElementById(origin).innerHTML = "";
+                        }
+                    });
+                } else {
+                    alert("auto");
+                }
+            }
+        </script>
     {% endblock extra_js %}
 
     {% block icon %}
