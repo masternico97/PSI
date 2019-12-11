@@ -10,7 +10,7 @@
                 // variable del turno del usuario del hound, porque por ejemplo
                 // {{ game.cat_user.id }} sí que lo acepta, entonces no sé
                 // por qué hay variables que te acepta y otras que no
-                while ({{ not game.cat_turn }}) {
+                while (!{ game.cat_turn }) {
                     $.ajax({
                         // Change for a valid python function that returns the html file
                         //url: "{% url 'get_move' %}",
