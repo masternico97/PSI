@@ -5,9 +5,10 @@
 {% if game.cat_user.id == request.user.id %}
     {% if not game.cat_turn %}
         <script type="text/javascript">
-            function refesh() {
+            function refresh() {
+                var cat_turn = false;
                 // !{ game.cat_turn } sigue dando error, no sabe qué es el '.'
-                while (!{ game.cat_turn }) {
+                while (cat_turn === false) {
                     $.ajax({
                         url: "{% url 'refresh' %}",
                         type: "GET",
@@ -17,23 +18,30 @@
             			},
                         success: function (data) {
                             // Parse to check if data is an error
-                            if (data) {
+                            if (!data.includes("ERROR")) {
                                 $("#board-text_wrapper").html(data);
                             } else {
                                 $(".errorlist").html(data);
                             }
                         }
                     });
-                    sleep(500);
+                    sleep(3000);
+                    {% if game.cat_turn %}
+                        alert("cat_turn = true");
+                        cat_turn = true;
+                    {% endif %}
                 }
             }
+            // Si activo la llamada, la página peta
+            //refresh();
         </script>
     {% endif %}
 {% else %}
     {% if game.cat_turn %}
         <script type="text/javascript">
-            function refesh() {
-                while ({ game.cat_turn }) {
+            function refresh() {
+                var cat_turn = true;
+                while (cat_turn === true) {
                     $.ajax({
                         url: "{% url 'refresh' %}",
                         type: "GET",
@@ -43,7 +51,7 @@
                         },
                         success: function (data) {
                             // Parse to check if data is an error
-                            if (data) {
+                            if (!data.includes("ERROR")) {
                                 $("#board-text_wrapper").html(data);
                             } else {
                                 $(".errorlist").html(data);
@@ -51,8 +59,14 @@
                         }
                     });
                     sleep(500);
+                    {% if not game.cat_turn %}
+                        alert("cat_turn = false");
+                        cat_turn = false;
+                    {% endif %}
                 }
             }
+            // Si activo la llamada, la página peta
+            //refresh();
         </script>
     {% endif %}
 {% endif %}
