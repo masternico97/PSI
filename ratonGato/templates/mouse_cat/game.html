@@ -15,6 +15,7 @@
                         error: function(data) {
                             // Introduce the error into an error tag
             				$(".errorlist").text(data);
+                            return;
             			},
                         success: function (data) {
                             // Parse to check if data is an error
@@ -22,6 +23,7 @@
                                 $("#board-text_wrapper").html(data);
                             } else {
                                 $(".errorlist").html(data);
+                                return;
                             }
                         }
                     });
@@ -48,6 +50,7 @@
                         error: function(data) {
                             // Introduce the error into an error tag
                             $(".errorlist").text(data + " failure");
+                            return;
                         },
                         success: function (data) {
                             // Parse to check if data is an error
@@ -55,6 +58,7 @@
                                 $("#board-text_wrapper").html(data);
                             } else {
                                 $(".errorlist").html(data);
+                                return;
                             }
                         }
                     });
