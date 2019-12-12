@@ -33,6 +33,7 @@ urlpatterns = [
     path('show_game/', views.show_game, name='show_game'),
     path('move/', views.move, name='move'),
     path('get_move/', views.get_move, name='get_move'),
+    path('refresh/', views.refresh, name='refresh'),
 ]
 
 urlpatterns += static(settings.STATIC_URL,

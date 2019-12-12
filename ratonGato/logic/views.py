@@ -485,3 +485,14 @@ def get_move(request):
             request.session["replay"] = movement
 
         return JsonResponse(response_data)
+
+@login_required(login_url='login')
+def refresh(request):
+    try:
+        File_object = open(r"{% static 'templates/mouse_cat/game_ajax.html' %}","r")
+        response_data = File_object.read()
+        File_object.close()
+    except IOError:
+        response_data = "ERROR: File does not exist."
+
+    return response_data

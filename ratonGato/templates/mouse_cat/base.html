@@ -10,11 +10,13 @@
         <script src="https://kit.fontawesome.com/a076d05399.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
         <script type="text/javascript" src="{% static 'js/drag_and_drop.js' %}"></script>
+        <script type="text/javascript" src="{% static 'js/useful.js' %}"></script>
 
         <script>
-            function replay(s){
-                var origin, target, previous, next;
-                if(s != 0){
+            var next;
+            function replay(s) {
+                var origin, target, previous;
+                if(s != 0) {
                     $.ajax({
                         url: "{% url 'get_move' %}",
                         type: "POST",
@@ -27,16 +29,16 @@
                             target = "blank_cell_"+data.target
                             previous = data.previous
                             next = data.next
-                    
+
                             document.getElementById(target).innerHTML = document.getElementById(origin).innerHTML;
                             document.getElementById(origin).innerHTML = "";
 
-                            if(previous === true){
+                            if (previous === true) {
                                 document.getElementById("preview").style.visibility = "visible";
                             } else {
                                 document.getElementById("preview").style.visibility = "hidden";
                             }
-                            if(next === true){
+                            if (next === true) {
                                 document.getElementById("forward").style.visibility = "visible";
                                 document.getElementById("auto").style.visibility = "visible";
                                 document.getElementById("replay_end").style.visibility = "hidden";
@@ -48,6 +50,7 @@
                         }
                     });
                 } else {
+                    sleep(1000);
                     $.ajax({
                         url: "{% url 'get_move' %}",
                         type: "POST",
@@ -60,7 +63,7 @@
                             target = "blank_cell_"+data.target
                             previous = data.previous
                             next = data.next
-                            
+
                             document.getElementById(target).innerHTML = document.getElementById(origin).innerHTML;
                             document.getElementById(origin).innerHTML = "";
 

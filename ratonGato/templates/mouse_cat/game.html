@@ -5,24 +5,22 @@
 {% if game.cat_user.id == request.user.id %}
     {% if not game.cat_turn %}
         <script type="text/javascript">
-            function refesh(){
-                // Esto peta, pero no sé qué valor poner para que me coja la
-                // variable del turno del usuario del hound, porque por ejemplo
-                // {{ game.cat_user.id }} sí que lo acepta, entonces no sé
-                // por qué hay variables que te acepta y otras que no
+            function refesh() {
+                // !{ game.cat_turn } sigue dando error, no sabe qué es el '.'
                 while (!{ game.cat_turn }) {
                     $.ajax({
-                        // Change for a valid python function that returns the html file
-                        //url: "{% url 'get_move' %}",
+                        url: "{% url 'refresh' %}",
                         type: "GET",
                         error: function(data) {
                             // Introduce the error into an error tag
-            				$(".errorlist").text(data + " failure");
+            				$("errorlist").text(data);
             			},
                         success: function (data) {
                             // Parse to check if data is an error
                             if (data) {
                                 $("#board-text_wrapper").html(data);
+                            } else {
+                                $(".errorlist").html(data);
                             }
                         }
                     });
@@ -34,11 +32,10 @@
 {% else %}
     {% if game.cat_turn %}
         <script type="text/javascript">
-            function refesh(){
-                while ({{ game.cat_turn }}) {
+            function refesh() {
+                while ({ game.cat_turn }) {
                     $.ajax({
-                        // Change for a valid python function that returns the html file
-                        //url: "{% url 'get_move' %}",
+                        url: "{% url 'refresh' %}",
                         type: "GET",
                         error: function(data) {
                             // Introduce the error into an error tag
@@ -48,6 +45,8 @@
                             // Parse to check if data is an error
                             if (data) {
                                 $("#board-text_wrapper").html(data);
+                            } else {
+                                $(".errorlist").html(data);
                             }
                         }
                     });
