@@ -3,7 +3,7 @@
  * Author: Martin Salinas
  */
 
-$(document).ready(function() {
+function ready() {
 	var initial_position = -1;
 	var final_position = -1;
 
@@ -30,4 +30,9 @@ $(document).ready(function() {
 			document.getElementById("move_button").click();
 		}
 	});
+}
+
+$(document).ready(function(){
+    // bind event handlers when the page loads.
+    ready();
 });

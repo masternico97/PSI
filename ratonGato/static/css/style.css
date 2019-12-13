@@ -216,29 +216,8 @@ nav > p {
 
 /* Game data in game page */
 #game_data {
-    width: 25%;
-}
-
-/* Replay buttons */
-#replay_menu {
-    width: 514px;
-    text-align: center;
-}
-
-#replay_menu button {
-    background-color: #2C93B9;
-    color: white;
-    padding: 5px 10px;
-    margin: 8px 0px;
-    margin-top: 0px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-}
-
-#replay_menu button:hover {
-    background-color: #237694;
-    cursor: pointer;
+    width: 150px;
+    margin-right: 20px;
 }
 
 /* Move form in game page */
@@ -252,10 +231,6 @@ nav > p {
 }
 
 #move_form .errorlist {
-    position: relative;
-    bottom: 70px;
-    left: -285px;
-    margin-bottom: 0px;
     font-size: 30px;
     font-family: sans-serif;
 }
@@ -264,7 +239,7 @@ nav > p {
 #wait_message {
     margin: 0px;
     position: absolute;
-    bottom: 192px;
+    bottom: 10px;
 }
 
 #wait_message p {
@@ -277,25 +252,24 @@ nav > p {
 
 /* Div for both endgame messages and wait messages */
 .content_wrapper {
-    width: 100%;
-    height: 514px;
-    margin-left: 20px;
+    width: 70%;
     text-align: center;
     position: relative;
+    bottom: 0%;
 }
 
 /* You lost/won message */
 #endgame_message_content {
-    margin: 0px;
-    line-height: 150px;
+    margin-bottom: 0px;
+    margin-left: 25px;
+    line-height: 300%;
     color: white;
     background-color: black;
     border-radius: 50px;
-    position: absolute;
-    bottom: 182px;
     font-family: 'Amita';
     font-size: 20px;
-    min-width: 410px;
+    position: absolute;
+    bottom: 10px;
 }
 
 #endgame_message_content img {
@@ -398,6 +372,28 @@ nav > p {
     width: 50%;
     float: left;
     padding-left: 10%;
+}
+
+/* Replay buttons */
+#replay_menu {
+    width: 490px;
+    text-align: center;
+}
+
+#replay_menu button {
+    background-color: #2C93B9;
+    color: white;
+    padding: 5px 10px;
+    margin: 8px 0px;
+    margin-top: 0px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+#replay_menu button:hover {
+    background-color: #237694;
+    cursor: pointer;
 }
 
 /* Replay items visibility */

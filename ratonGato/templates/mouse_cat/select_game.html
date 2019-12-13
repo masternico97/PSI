@@ -122,10 +122,18 @@
                     <a href="{% url 'select_game' game.id %}">
                         <b>Game {{game.id}}</b>:
                         {% if game.status == 3 %}
-                            {% if game.winner == 1 %}
-                                You lost playing against {{ game.mouse_user.username }}.
+                            {% if game.cat_user.id == user %}
+                                {% if game.winner == 1 %}
+                                    You lost playing against {{ game.mouse_user.username }}.
+                                {% else %}
+                                    You won playing against {{ game.mouse_user.username }}.
+                                {% endif %}
                             {% else %}
-                                You won playing against {{ game.mouse_user.username }}.
+                                {% if game.winner == 2 %}
+                                    You lost playing against {{ game.mouse_user.username }}.
+                                {% else %}
+                                    You won playing against {{ game.mouse_user.username }}.
+                                {% endif %}
                             {% endif %}
                         {% endif %}
                     </a>

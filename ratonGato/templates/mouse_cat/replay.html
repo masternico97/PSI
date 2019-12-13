@@ -2,83 +2,190 @@
 {% load staticfiles %}
 
 {% block content %}
-<div id="content">
-    <h1>Play</h1>
-    <div id="game_wrapper">
-        <div id="game_data">
-            <p>Game: <b>{{ game.id }}</b></p>
-                <p>
-                    Hounds:
-                    <b>
-                        {% if game.cat_user.id == request.user.id %}
-                            You
-                        {% else %}
-                            {{ game.cat_user.username }}
-                        {% endif %}
-                    </b>
-                </p>
-                <p>
-                    Fox:
-                    <b>
-                        {% if game.mouse_user.id == request.user.id %}
-                            You
-                        {% else %}
-                            {{ game.mouse_user.username }}
-                        {% endif %}
-                    </b>
-                </p>
-        </div>
-    </div>
-    <div id="replay_menu">
-        <button id="preview" class="replay_button" onclick="replay(-1)" type="button"><<</button>
-        <button id="auto" class="replay_button" onclick="prepareAutoPlay()" type="button">PLAY</button>
-        <button id="forward" class="replay_button" onclick="replay(1)" type="button">>></button>
-    </div>
+<!-- Author: Nicolas Serrano -->
+    <script>
+        var autoplay, next, previous;
+        function prepareAutoPlay() {
+            document.getElementById("auto").onclick = function() { return; };
+            document.getElementById("preview").onclick = function() { return; };
+            document.getElementById("forward").onclick = function() { return; };
+            autoplay = setInterval(function() { replay(0); }, 1000);
+        }
+        function replay(s) {
+            let origin, target;
+            if(s != 0) {
+                $.ajax({
+                    url: "{% url 'get_move' %}",
+                    type: "POST",
+                    data: {
+                        shift: s,
+                        csrfmiddlewaretoken: '{{ csrf_token }}',
+                    },
+                    success: function (data) {
+                        origin = "blank_cell_"+data.origin
+                        target = "blank_cell_"+data.target
+                        previous = data.previous
+                        next = data.next
 
-    <div id="board-text_wrapper">
-        {% if board %}
-            <table id="chess_board">
-            {% for item in board %}
-                {% if forloop.counter0|divisibleby:8 %}
-                    <tr>
-                {% endif %}
-                <td id="cell_{{ forloop.counter0 }}">
-                    <div id="blank_cell_{{ forloop.counter0 }}" class="blank_cell">
-                    {% if item ==  0 %}
-                    {% elif item == 1 %}<img id="duck_hunt_{{ forloop.counter0 }}" src="{% static 'images/duck_hunt.png' %}" alt="Hound">
-                    {% else %}<img id="tails" src="{% static 'images/tails.png' %}" alt="Fox">
-                    {% endif %}
-                    </div>
-                </td>
-                {% if forloop.counter|divisibleby:8 or forloop.last %}
-                    </tr>
-                {% endif %}
-            {% endfor %}
-            </table>
-        {% endif %}
+                        document.getElementById(target).innerHTML = document.getElementById(origin).innerHTML;
+                        document.getElementById(origin).innerHTML = "";
 
-        <div class="content_wrapper" id="replay_end">
-            <p id="endgame_message_content">
+                        if (previous === true) {
+                            document.getElementById("preview").style.visibility = "visible";
+                        } else {
+                            document.getElementById("preview").style.visibility = "hidden";
+                        }
+                        if (next === true) {
+                            document.getElementById("forward").style.visibility = "visible";
+                            document.getElementById("auto").style.visibility = "visible";
+                            document.getElementById("replay_end").style.visibility = "hidden";
+                        } else {
+                            document.getElementById("forward").style.visibility = "hidden";
+                            document.getElementById("auto").style.visibility = "hidden";
+                            document.getElementById("replay_end").style.visibility = "visible";
+                        }
+                    }
+                });
+            } else {
+                if (!(next === true || next == null)) {
+                    stopAutoPlay(autoplay, previous, next);
+                    return;
+                }
+                $.ajax({
+                    url: "{% url 'get_move' %}",
+                    type: "POST",
+                    data: {
+                        shift: 1,
+                        csrfmiddlewaretoken: '{{ csrf_token }}',
+                    },
+                    success: function (data) {
+                        origin = "blank_cell_"+data.origin
+                        target = "blank_cell_"+data.target
+                        previous = data.previous
+                        next = data.next
+
+                        /* Ocultamos los botones para que no sean clickables mientras dura la ejecución */
+                        /* automática, menos PLAY, al que cambiamos su nombre por PAUSE, que ahora detendrá */
+                        /* la ejecución del auto replay */
+                        if (document.getElementById("auto").innerHTML == "PLAY") {
+                            document.getElementById("auto").innerHTML = "PAUSE";
+                            document.getElementById("auto").onclick = function() { stopAutoPlay(autoplay, previous, next); };
+                        }
+                        document.getElementById("forward").style.visibility = "hidden";
+                        document.getElementById("preview").style.visibility = "hidden";
+                        document.getElementById("replay_end").style.visibility = "hidden";
+
+                        document.getElementById(target).innerHTML = document.getElementById(origin).innerHTML;
+                        document.getElementById(origin).innerHTML = "";
+                    }
+                });
+            }
+        }
+    </script>
+    <div id="content">
+        <h1>Play</h1>
+        <div id="game_wrapper">
+            <div id="game_data">
+                <p>Game: <b>{{ game.id }}</b></p>
+                    <p>
+                        Hounds:
+                        <b>
+                            {% if game.cat_user.id == request.user.id %}
+                                You
+                            {% else %}
+                                {{ game.cat_user.username }}
+                            {% endif %}
+                        </b>
+                    </p>
+                    <p>
+                        Fox:
+                        <b>
+                            {% if game.mouse_user.id == request.user.id %}
+                                You
+                            {% else %}
+                                {{ game.mouse_user.username }}
+                            {% endif %}
+                        </b>
+                    </p>
+            </div>
+            <div class="content_wrapper" id="replay_end">
                 {% if game.cat_user.id == request.user.id %}
                     {% if game.winner == 1 %}
-                        You lost. Better luck nex time!
+                        <p id="endgame_message_content" style="min-width: 300px; max-width: 400px;">
+                            You lost. Better luck nex time!
+                        </p>
                     {% else %}
-                        <img src="{% static 'images/fireworks.gif' %}" alt="Fireworks">
-                        You won! Congratulations!
-                        <img src="{% static 'images/fireworks.gif' %}" alt="Fireworks">
+                        <p id="endgame_message_content" style="min-width: 410px; max-width: 500px;">
+                            <img src="{% static 'images/fireworks.gif' %}" alt="Fireworks">
+                            You won! Congratulations!
+                            <img src="{% static 'images/fireworks.gif' %}" alt="Fireworks">
+                        </p>
                     {% endif %}
                 {% else %}
                     {% if game.winner == 1 %}
-                        <img src="{% static 'images/fireworks.gif' %}" alt="Fireworks">
-                        You won! Congratulations!
-                        <img src="{% static 'images/fireworks.gif' %}" alt="Fireworks">
+                        <p id="endgame_message_content" style="min-width: 410px; max-width: 500px;">
+                            <img src="{% static 'images/fireworks.gif' %}" alt="Fireworks">
+                            You won! Congratulations!
+                            <img src="{% static 'images/fireworks.gif' %}" alt="Fireworks">
+                        </p>
                     {% else %}
-                        You lost. Better luck next time!
+                        <p id="endgame_message_content" style="min-width: 300px; max-width: 400px;">
+                            You lost. Better luck nex time!
+                        </p>
                     {% endif %}
                 {% endif %}
-            </p>
+            </div>
         </div>
+        <div id="replay_menu">
+            <button id="preview" class="replay_button" onclick="replay(-1)" type="button"><<</button>
+            <button id="auto" class="replay_button" onclick="prepareAutoPlay()" type="button">PLAY</button>
+            <button id="forward" class="replay_button" onclick="replay(1)" type="button">>></button>
+        </div>
+
+        <div id="board-text_wrapper">
+            {% if board %}
+                <table id="chess_board">
+                {% for item in board %}
+                    {% if forloop.counter0|divisibleby:8 %}
+                        <tr>
+                    {% endif %}
+                    <td id="cell_{{ forloop.counter0 }}">
+                        <div id="blank_cell_{{ forloop.counter0 }}" class="blank_cell">
+                        {% if item ==  0 %}
+                        {% elif item == 1 %}<img id="duck_hunt_{{ forloop.counter0 }}" src="{% static 'images/duck_hunt.png' %}" alt="Hound">
+                        {% else %}<img id="tails" src="{% static 'images/tails.png' %}" alt="Fox">
+                        {% endif %}
+                        </div>
+                    </td>
+                    {% if forloop.counter|divisibleby:8 or forloop.last %}
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+                </table>
+            {% endif %}
+
+            <div class="content_wrapper" id="replay_end">
+                <p id="endgame_message_content">
+                    {% if game.cat_user.id == request.user.id %}
+                        {% if game.winner == 1 %}
+                            You lost. Better luck nex time!
+                        {% else %}
+                            <img src="{% static 'images/fireworks.gif' %}" alt="Fireworks">
+                            You won! Congratulations!
+                            <img src="{% static 'images/fireworks.gif' %}" alt="Fireworks">
+                        {% endif %}
+                    {% else %}
+                        {% if game.winner == 1 %}
+                            <img src="{% static 'images/fireworks.gif' %}" alt="Fireworks">
+                            You won! Congratulations!
+                            <img src="{% static 'images/fireworks.gif' %}" alt="Fireworks">
+                        {% else %}
+                            You lost. Better luck next time!
+                        {% endif %}
+                    {% endif %}
+                </p>
+            </div>
+        </div>
+        <p id="return"><a href="{% url 'landing' %}">Home</a></p>
     </div>
-    <p id="return"><a href="{% url 'landing' %}">Home</a></p>
-</div>
 {% endblock content %}

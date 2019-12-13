@@ -3,11 +3,10 @@
 
 {% block content %}
 {% if game.cat_user.id == request.user.id and not game.cat_turn or game.mouse_user.id == request.user.id and game.cat_turn %}
+<!-- Author: Martin Salinas -->
     <script type="text/javascript">
-        var refresh_id;
+        var refresh_id, cat_turn;
         function refresh() {
-            console.log("Refreshing...");
-            let cat_turn;
             $.ajax({
                 url: "{% url 'refresh' %}",
                 type: "GET",
@@ -18,8 +17,11 @@
                 success: function (data) {
                     // Parse to check if data is an error
                     if (!data['html'].includes('ERROR')) {
-                        $("#board-text_wrapper").html(data['html']);
+                        $("#content").html(data['html']);
                         cat_turn = data['cat_turn'];
+                        if (data['myturn'] === true) {
+                            ready();
+                        }
                     } else {
                         $(".errorlist").html(data);
                     }
@@ -35,8 +37,7 @@
                 }
             {% endif %}
         }
-        // Acabar refresh bien antes de descomentar
-        refresh_id = setInterval(function() { refresh(); }, 5000);
+        refresh_id = setInterval(function() { refresh(); }, 500);
     </script>
 {% endif %}
 <div id="content">
@@ -65,7 +66,76 @@
                     </b>
                 </p>
             </div>
-        </div>
+            {% if game.cat_user.id == request.user.id %}
+            {% if game.status == 2 %}
+                {% if game.cat_turn %}
+                    <form id="move_form" method="post" action="{% url 'move' %}">
+                        {% csrf_token %}
+                        <div id="game_error_wrapper">
+                            {{ move_form }}
+                            <input id="move_button" type="submit" value="Move">
+                        </div>
+                    </form>
+                {% else %}
+                    <div class="content_wrapper">
+                        <div id="wait_message">
+                            <img src="{% static 'images/fox_wait.gif' %}" alt="Fox">
+                            <br>
+                            <p>The fox is playing, please wait for it.</p>
+                        </div>
+                    </div>
+                {% endif %}
+            {% else %}
+                <div class="content_wrapper">
+                        {% if game.winner == 1 %}
+                            <p id="endgame_message_content" style="min-width: 300px; max-width: 400px;">
+                                You lost. Better luck nex time!
+                            </p>
+                        {% else %}
+                            <p id="endgame_message_content" style="min-width: 410px; max-width: 500px;">
+                                <img src="{% static 'images/fireworks.gif' %}" alt="Fireworks">
+                                You won! Congratulations!
+                                <img src="{% static 'images/fireworks.gif' %}" alt="Fireworks">
+                            </p>
+                        {% endif %}
+                </div>
+            {% endif %}
+        {% else %}
+            {% if game.status == 2 %}
+                {% if not game.cat_turn %}
+                    <form id="move_form" method="post" action="{% url 'move' %}">
+                        {% csrf_token %}
+                        <div id="game_error_wrapper">
+                            {{ move_form }}
+                            <input id="move_button" type="submit" value="Move">
+                        </div>
+                    </form>
+                {% else %}
+                    <div class="content_wrapper">
+                        <div id="wait_message">
+                            <img src="{% static 'images/hound_wait.gif' %}" alt="Hounds">
+                            <br>
+                            <p>The hounds are playing, please wait for them.</p>
+                        </div>
+                    </div>
+                {% endif %}
+            {% else %}
+                <div class="content_wrapper">
+                        {% if game.winner == 1 %}
+                            <p id="endgame_message_content" style="min-width: 410px; max-width: 500px;">
+                                <img src="{% static 'images/fireworks.gif' %}" alt="Fireworks">
+                                You won! Congratulations!
+                                <img src="{% static 'images/fireworks.gif' %}" alt="Fireworks">
+                            </p>
+                        {% else %}
+                            <p id="endgame_message_content" style="min-width: 300px; max-width: 400px;">
+                                You lost. Better luck nex time!
+                            </p>
+                        {% endif %}
+                </div>
+            {% endif %}
+        {% endif %}
+    </div>
     <div id="board-text_wrapper">
         {% if board %}
             <table id="chess_board">
@@ -86,71 +156,6 @@
                 {% endif %}
             {% endfor %}
             </table>
-        {% endif %}
-        {% if game.cat_user.id == request.user.id %}
-            {% if game.status == 2 %}
-                {% if game.cat_turn %}
-                    <form id="move_form" method="post" action="{% url 'move' %}">
-                        {% csrf_token %}
-                        <div id="game_error_wrapper">
-                            {{ move_form }}
-                            <input id="move_button" type="submit" value="Move">
-                        </div>
-                    </form>
-                {% else %}
-                    <div class="content_wrapper">
-                        <div id="wait_message">
-                            <img src="{% static 'images/fox_wait.gif' %}" alt="Fox">
-                            <br>
-                            <p>The fox is playing, please wait for it.<a id="refresh_link" href="{% url 'show_game' %}">Refresh</a></p>
-                        </div>
-                    </div>
-                {% endif %}
-            {% else %}
-                <div class="content_wrapper">
-                    <p id="endgame_message_content">
-                        {% if game.winner == 1 %}
-                            You lost. Better luck nex time!
-                        {% else %}
-                            <img src="{% static 'images/fireworks.gif' %}" alt="Fireworks">
-                            You won! Congratulations!
-                            <img src="{% static 'images/fireworks.gif' %}" alt="Fireworks">
-                        {% endif %}
-                    </p>
-                </div>
-            {% endif %}
-        {% else %}
-            {% if game.status == 2 %}
-                {% if not game.cat_turn %}
-                    <form id="move_form" method="post" action="{% url 'move' %}">
-                        {% csrf_token %}
-                        <div id="game_error_wrapper">
-                            {{ move_form }}
-                            <input id="move_button" type="submit" value="Move">
-                        </div>
-                    </form>
-                {% else %}
-                    <div class="content_wrapper">
-                        <div id="wait_message">
-                            <img src="{% static 'images/hound_wait.gif' %}" alt="Hounds">
-                            <br>
-                            <p>The hounds are playing, please wait for them.<a id="refresh_link" href="{% url 'show_game' %}">Refresh</a></p>
-                        </div>
-                    </div>
-                {% endif %}
-            {% else %}
-                <div class="content_wrapper">
-                    <p id="endgame_message_content">
-                        {% if game.winner == 1 %}
-                            <img src="{% static 'images/fireworks.gif' %}" alt="Fireworks">
-                            You won! Congratulations!
-                            <img src="{% static 'images/fireworks.gif' %}" alt="Fireworks">
-                        {% else %}
-                            You lost. Better luck next time!
-                        {% endif %}
-                    </p>
-                </div>
-            {% endif %}
         {% endif %}
     </div>
     <p id="return"><a href="{% url 'landing' %}">Home</a></p>

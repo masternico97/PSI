@@ -195,9 +195,9 @@ def join_game(request):
     Author:
     """
     min_id = (Game.objects.
-          filter(status=GameStatus.CREATED).
-          exclude(cat_user=request.user).
-          aggregate(Min('id')))
+              filter(status=GameStatus.CREATED).
+              exclude(cat_user=request.user).
+              aggregate(Min('id')))
 
     if min_id['id__min']:
         result = (Game.objects.
@@ -313,6 +313,7 @@ def select_game(request, game_id=None):
         context_dict["replay"] = paginator_replay.get_page(page_replay)
 
         context_dict["counter_global"] = Counter.objects.get_current_value()
+        context_dict["user"] = request.user.id
 
         return render(request, "mouse_cat/select_game.html", context_dict)
 
@@ -457,7 +458,8 @@ def get_move(request):
         movement = request.session.get("replay", 0)
         max_movements = game.moves.count()
 
-        if (movement == 0 and shift == -1) or (shift == 1 and movement == max_movements):
+        if ((movement == 0 and
+             shift == -1) or (shift == 1 and movement == max_movements)):
             retorno = errorHTTP(request, "Replay not allowed")
             retorno.status_code = 404
             return retorno
@@ -492,6 +494,7 @@ def get_move(request):
 
         return JsonResponse(response_data)
 
+
 @login_required(login_url='login')
 def refresh(request):
     """
@@ -514,6 +517,8 @@ def refresh(request):
         retorno.status_code = 404
         return retorno
     context_dict = {}
+    context_dict["move_form"] = MoveForm()
+    context_dict['request'] = request
     context_dict['request.user.id'] = request.user.id
     context_dict["game"] = game
     context_dict["game.cat_user.id"] = game.cat_user.id
@@ -529,6 +534,14 @@ def refresh(request):
     context_dict["board"] = board
     response_data = {}
     response_data['cat_turn'] = game.cat_turn
-    response_data['html'] = render_to_string("mouse_cat/game_ajax.html", context=context_dict)
-    print(response_data['html'])
+    print(game.cat_turn)
+    response_data['html'] = render_to_string("mouse_cat/game_ajax.html",
+                                             context=context_dict,
+                                             request=request)
+    if (((game.cat_user.id == request.user.id) and
+        (game.cat_turn)) or ((game.mouse_user.id == request.user.id) and
+                             (game.cat_turn is False))):
+        response_data['myturn'] = True
+    else:
+        response_data['myturn'] = False
     return JsonResponse(response_data)
