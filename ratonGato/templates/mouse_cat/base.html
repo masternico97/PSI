@@ -72,10 +72,10 @@
                             next = data.next
 
                             /* Ocultamos los botones para que no sean clickables mientras dura la ejecución */
-                            /* automática, menos AUTO, al que cambiamos su nombre por STOP, que ahora detendrá */
+                            /* automática, menos PLAY, al que cambiamos su nombre por PAUSE, que ahora detendrá */
                             /* la ejecución del auto replay */
-                            if (document.getElementById("auto").innerHTML == "AUTO") {
-                                document.getElementById("auto").innerHTML = "STOP";
+                            if (document.getElementById("auto").innerHTML == "PLAY") {
+                                document.getElementById("auto").innerHTML = "PAUSE";
                                 document.getElementById("auto").onclick = function() { stopAutoPlay(autoplay, previous, next); };
                             }
                             document.getElementById("forward").style.visibility = "hidden";

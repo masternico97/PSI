@@ -20,16 +20,14 @@
             </table>
         {% endif %}
         {% if game.cat_user.id == request.user.id %}
+            <div class="content_wrapper">
             {% if game.status == 2 %}
-                <div class="content_wrapper">
                     <div id="wait_message">
                         <img src="{% static 'images/fox_wait.gif' %}" alt="Fox">
                         <br>
-                        <p>The fox is playing, please wait for it.<a id="refresh_link" href="{% url 'show_game' %}">Refresh</a></p>
+                        <p>The fox is playing, please wait for it.</p>
                     </div>
-                </div>
             {% else %}
-                <div class="content_wrapper">
                     <p id="endgame_message_content">
                         {% if game.winner == 1 %}
                             You lost. Better luck nex time!
@@ -39,8 +37,8 @@
                             <img src="{% static 'images/fireworks.gif' %}" alt="Fireworks">
                         {% endif %}
                     </p>
-                </div>
             {% endif %}
+            </div>
         {% else %}
             {% if game.status == 2 %}
                 <form id="move_form" method="post" action="{% url 'move' %}">

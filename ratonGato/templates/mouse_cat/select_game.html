@@ -4,7 +4,6 @@
 <div id="content">
     <h1>Select game</h1>
     <p><b><u>Games joined</u>:</b></p>
-    <p>
         {% if as_cat %}
             Games as hounds:
             <ul>
@@ -30,22 +29,20 @@
                         <a class="page_link" href="?page_as_cat=1&page_as_mouse={{ as_mouse.number }}&page_join={{ join.number }}&page_replay={{ replay.number }}">&laquo; first</a>
                         <a class="page_link" href="?page_as_cat={{ as_cat.previous_page_number }}&page_as_mouse={{ as_mouse.number }}&page_join={{ join.number }}&page_replay={{ replay.number }}">previous</a>
                     {% endif %}
-            
-                    <span class="current">
-                        Page {{ as_cat.number }} of {{ as_cat.paginator.num_pages }}.
-                    </span>
-            
-                    {% if as_cat.has_next %}
-                        <a class="page_link" href="?page_as_cat={{ as_cat.next_page_number }}&page_as_mouse={{ as_mouse.number }}&page_join={{ join.number }}&page_replay={{ replay.number }}">next</a>
-                        <a class="page_link" href="?page_as_cat={{ as_cat.paginator.num_pages }}&page_as_mouse={{ as_mouse.number }}&page_join={{ join.number }}&page_replay={{ replay.number }}">last &raquo;</a>
-                    {% endif %}
+                    <p>
+                        <span class="current">
+                            Page {{ as_cat.number }} of {{ as_cat.paginator.num_pages }}.
+                        </span>
+                        {% if as_cat.has_next %}
+                            <a class="page_link" href="?page_as_cat={{ as_cat.next_page_number }}&page_as_mouse={{ as_mouse.number }}&page_join={{ join.number }}&page_replay={{ replay.number }}">next</a>
+                            <a class="page_link" href="?page_as_cat={{ as_cat.paginator.num_pages }}&page_as_mouse={{ as_mouse.number }}&page_join={{ join.number }}&page_replay={{ replay.number }}">last &raquo;</a>
+                        {% endif %}
+                    </p>
                 </span>
             </div>
         {% else %}
             No games as hounds
         {% endif %}
-    </p>
-    <p>
         {% if as_mouse %}
             Games as fox:
             <ul>
@@ -71,23 +68,21 @@
                         <a class="page_link" href="?page_as_mouse=1&page_as_cat={{ as_cat.number }}&page_join={{ join.number }}&page_replay={{ replay.number }}">&laquo; first</a>
                         <a class="page_link" href="?page_as_mouse={{ as_mouse.previous_page_number }}&page_as_cat={{ as_cat.number }}&page_join={{ join.number }}&page_replay={{ replay.number }}">previous</a>
                     {% endif %}
-            
-                    <span class="current">
-                        Page {{ as_mouse.number }} of {{ as_mouse.paginator.num_pages }}.
-                    </span>
-            
-                    {% if as_mouse.has_next %}
-                        <a class="page_link" href="?page_as_mouse={{ as_mouse.next_page_number }}&page_as_cat={{ as_cat.number }}&page_join={{ join.number }}&page_replay={{ replay.number }}">next</a>
-                        <a class="page_link" href="?page_as_mouse={{ as_mouse.paginator.num_pages }}&page_as_cat={{ as_cat.number }}&page_join={{ join.number }}&page_replay={{ replay.number }}">last &raquo;</a>
-                    {% endif %}
+                    <p>
+                        <span class="current">
+                            Page {{ as_mouse.number }} of {{ as_mouse.paginator.num_pages }}.
+                        </span>
+                        {% if as_mouse.has_next %}
+                            <a class="page_link" href="?page_as_mouse={{ as_mouse.next_page_number }}&page_as_cat={{ as_cat.number }}&page_join={{ join.number }}&page_replay={{ replay.number }}">next</a>
+                            <a class="page_link" href="?page_as_mouse={{ as_mouse.paginator.num_pages }}&page_as_cat={{ as_cat.number }}&page_join={{ join.number }}&page_replay={{ replay.number }}">last &raquo;</a>
+                        {% endif %}
+                    </p>
                 </span>
             </div>
         {% else %}
             No games as fox
         {% endif %}
-    </p>
     <p><b><u>Games to join</u>:</b></p>
-    <p>
         {% if join %}
             <ul>
             {% for game in join %}
@@ -105,23 +100,21 @@
                         <a class="page_link" href="?page_join=1&page_as_cat={{ as_cat.number }}&page_as_mouse={{ as_mouse.number }}&page_replay={{ replay.number }}">&laquo; first</a>
                         <a class="page_link" href="?page_join={{ join.previous_page_number }}&page_as_cat={{ as_cat.number }}&page_as_mouse={{ as_mouse.number }}&page_replay={{ replay.number }}">previous</a>
                     {% endif %}
-            
-                    <span class="current">
-                        Page {{ join.number }} of {{ join.paginator.num_pages }}.
-                    </span>
-            
-                    {% if join.has_next %}
-                        <a class="page_link" href="?page_join={{ join.next_page_number }}&page_as_cat={{ as_cat.number }}&page_as_mouse={{ as_mouse.number }}&page_replay={{ replay.number }}">next</a>
-                        <a class="page_link" href="?page_join={{ join.paginator.num_pages }}&page_as_cat={{ as_cat.number }}&page_as_mouse={{ as_mouse.number }}&page_replay={{ replay.number }}">last &raquo;</a>
-                    {% endif %}
+                    <p>
+                        <span class="current">
+                            Page {{ join.number }} of {{ join.paginator.num_pages }}.
+                        </span>
+                        {% if join.has_next %}
+                            <a class="page_link" href="?page_join={{ join.next_page_number }}&page_as_cat={{ as_cat.number }}&page_as_mouse={{ as_mouse.number }}&page_replay={{ replay.number }}">next</a>
+                            <a class="page_link" href="?page_join={{ join.paginator.num_pages }}&page_as_cat={{ as_cat.number }}&page_as_mouse={{ as_mouse.number }}&page_replay={{ replay.number }}">last &raquo;</a>
+                        {% endif %}
+                    </p>
                 </span>
             </div>
         {% else %}
             No avaliable games to join
         {% endif %}
-    </p>
     <p><b><u>Games finished</u>:</b></p>
-    <p>
         {% if replay %}
             <ul>
             {% for game in replay %}
@@ -145,21 +138,20 @@
                         <a class="page_link" href="?page_replay=1&page_as_cat={{ as_cat.number }}&page_as_mouse={{ as_mouse.number }}&page_join={{ join.number }}">&laquo; first</a>
                         <a class="page_link" href="?page_replay={{ replay.previous_page_number }}&page_as_cat={{ as_cat.number }}&page_as_mouse={{ as_mouse.number }}&page_join={{ join.number }}">previous</a>
                     {% endif %}
-            
-                    <span class="current">
-                        Page {{ replay.number }} of {{ replay.paginator.num_pages }}.
-                    </span>
-            
-                    {% if replay.has_next %}
-                        <a class="page_link" href="?page_replay={{ replay.next_page_number }}&page_as_cat={{ as_cat.number }}&page_as_mouse={{ as_mouse.number }}&page_join={{ join.number }}">next</a>
-                        <a class="page_link" href="?page_replay={{ replay.paginator.num_pages }}&page_as_cat={{ as_cat.number }}&page_as_mouse={{ as_mouse.number }}&page_join={{ join.number }}">last &raquo;</a>
-                    {% endif %}
+                    <p>
+                        <span class="current">
+                            Page {{ replay.number }} of {{ replay.paginator.num_pages }}.
+                        </span>
+                        {% if replay.has_next %}
+                            <a class="page_link" href="?page_replay={{ replay.next_page_number }}&page_as_cat={{ as_cat.number }}&page_as_mouse={{ as_mouse.number }}&page_join={{ join.number }}">next</a>
+                            <a class="page_link" href="?page_replay={{ replay.paginator.num_pages }}&page_as_cat={{ as_cat.number }}&page_as_mouse={{ as_mouse.number }}&page_join={{ join.number }}">last &raquo;</a>
+                        {% endif %}
+                    </p>
                 </span>
             </div>
         {% else %}
             No finished games
         {% endif %}
-    </p>
     <p id="return"><a href="{% url 'landing' %}">Home</a></p>
 </div>
 {% endblock content %}

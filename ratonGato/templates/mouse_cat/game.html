@@ -4,39 +4,38 @@
 {% block content %}
 {% if game.cat_user.id == request.user.id and not game.cat_turn or game.mouse_user.id == request.user.id and game.cat_turn %}
     <script type="text/javascript">
-        async function refresh() {
-            let error = false;
-            {% if not game.cat_turn %}
-                let cat_turn = false;
-                while (cat_turn === false && error === false) {
-            {% else %}
-                let cat_turn = true;
-                while (cat_turn === true && error === false) {
-            {% endif %}
-                $.ajax({
-                    url: "{% url 'refresh' %}",
-                    type: "GET",
-                    error: function(data) {
-                        // Introduce the error into an error tag
-                        $(".errorlist").text(data);
-                        error = true;
-                    },
-                    success: function (data) {
-                        // Parse to check if data is an error
-                        if (!data['html'].includes('ERROR')) {
-                            $("#board-text_wrapper").html(data['html']);
-                            cat_turn = data['cat_turn'];
-                        } else {
-                            $(".errorlist").html(data);
-                            error = true;
-                        }
+        var refresh_id;
+        function refresh() {
+            let cat_turn;
+            $.ajax({
+                url: "{% url 'refresh' %}",
+                type: "GET",
+                error: function(data) {
+                    // Introduce the error into an error tag
+                    $(".errorlist").text(data);
+                },
+                success: function (data) {
+                    // Parse to check if data is an error
+                    if (!data['html'].includes('ERROR')) {
+                        $("#board-text_wrapper").html(data['html']);
+                        cat_turn = data['cat_turn'];
+                    } else {
+                        $(".errorlist").html(data);
                     }
-                });
-                sleep(1000);
-            }
+                }
+            });
+            {% if game.cat_user.id == request.user.id %}
+                if (cat_turn === true) {
+                    stopRefresh(refresh_id);
+                }
+            {% else %}
+                if (cat_turn === false) {
+                    stopRefresh(refresh_id);
+                }
+            {% endif %}
         }
-        // Si activo la llamada, la página peta
-        //setTimeout(refresh, 0);
+        // Acabar refresh bien antes de descomentar
+        //refresh_id = setInterval(function() { refresh(); }, 5000);
     </script>
 {% endif %}
 <div id="content">

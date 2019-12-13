@@ -5,6 +5,7 @@
 
  /*
   * Function in charge of pausing javascript execution for n miliseconds
+  * Actually unused
   * Author: Martin Salinas
   */
 function sleep(miliseconds) {
@@ -21,7 +22,7 @@ function sleep(miliseconds) {
 function stopAutoPlay(id, prev, next) {
     if (id != null && prev != null && next != null) {
         clearInterval(id);
-        document.getElementById("auto").innerHTML = "AUTO";
+        document.getElementById("auto").innerHTML = "PLAY";
         document.getElementById("auto").onclick = function() { prepareAutoPlay(); };
         if (next === true) {
             document.getElementById("forward").style.visibility = "visible";
@@ -34,5 +35,15 @@ function stopAutoPlay(id, prev, next) {
         } else {
             document.getElementById("preview").style.visibility = "hidden";
         }
+    }
+}
+
+/*
+ * Function in charge of stopping the game's asynchronous refresh
+ * Author: Martin Salinas
+ */
+function stopRefresh(id) {
+    if (id != null) {
+        clearInterval(id);
     }
 }

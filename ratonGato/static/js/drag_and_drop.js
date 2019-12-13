@@ -1,5 +1,5 @@
 /*
- * Function incharge of the drag and drop of the game
+ * Function in charge of the drag and drop of the game
  * Author: Martin Salinas
  */
 
