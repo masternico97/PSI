@@ -2,77 +2,42 @@
 {% load staticfiles %}
 
 {% block content %}
-{% if game.cat_user.id == request.user.id %}
-    {% if not game.cat_turn %}
-        <script type="text/javascript">
-            function refresh() {
-                var cat_turn = false;
-                // !{ game.cat_turn } sigue dando error, no sabe qué es el '.'
-                while (cat_turn === false) {
-                    $.ajax({
-                        url: "{% url 'refresh' %}",
-                        type: "GET",
-                        error: function(data) {
-                            // Introduce the error into an error tag
-            				$(".errorlist").text(data);
-                            return;
-            			},
-                        success: function (data) {
-                            // Parse to check if data is an error
-                            if (!data.includes("ERROR")) {
-                                $("#board-text_wrapper").html(data);
-                            } else {
-                                $(".errorlist").html(data);
-                                return;
-                            }
+{% if game.cat_user.id == request.user.id and not game.cat_turn or game.mouse_user.id == request.user.id and game.cat_turn %}
+    <script type="text/javascript">
+        async function refresh() {
+            let error = false;
+            {% if not game.cat_turn %}
+                let cat_turn = false;
+                while (cat_turn === false && error === false) {
+            {% else %}
+                let cat_turn = true;
+                while (cat_turn === true && error === false) {
+            {% endif %}
+                $.ajax({
+                    url: "{% url 'refresh' %}",
+                    type: "GET",
+                    error: function(data) {
+                        // Introduce the error into an error tag
+                        $(".errorlist").text(data);
+                        error = true;
+                    },
+                    success: function (data) {
+                        // Parse to check if data is an error
+                        if (!data['html'].includes('ERROR')) {
+                            $("#board-text_wrapper").html(data['html']);
+                            cat_turn = data['cat_turn'];
+                        } else {
+                            $(".errorlist").html(data);
+                            error = true;
                         }
-                    });
-                    sleep(3000);
-                    {% if game.cat_turn %}
-                        alert("cat_turn = true");
-                        cat_turn = true;
-                    {% endif %}
-                }
+                    }
+                });
+                sleep(1000);
             }
-            // Si activo la llamada, la página peta
-            //refresh();
-        </script>
-    {% endif %}
-{% else %}
-    {% if game.cat_turn %}
-        <script type="text/javascript">
-            function refresh() {
-                var cat_turn = true;
-                while (cat_turn === true) {
-                    $.ajax({
-                        url: "{% url 'refresh' %}",
-                        type: "GET",
-                        error: function(data) {
-                            // Introduce the error into an error tag
-                            $(".errorlist").text(data + " failure");
-                            return;
-                        },
-                        success: function (data) {
-                            // Parse to check if data is an error
-                            if (!data.includes("ERROR")) {
-                                $("#board-text_wrapper").html(data);
-                            } else {
-                                $(".errorlist").html(data);
-                                return;
-                            }
-                        }
-                    });
-                    sleep(500);
-                    {% if not game.cat_turn %}
-                        alert("cat_turn = false");
-                        cat_turn = false;
-                    {% endif %}
-                }
-            }
-            // Si activo la llamada, la página peta
-            //refresh();
-        </script>
-    {% endif %}
+        }
+        // Si activo la llamada, la página peta
+        //setTimeout(refresh, 0);
+    </script>
 {% endif %}
 <div id="content">
     <h1>Play</h1>

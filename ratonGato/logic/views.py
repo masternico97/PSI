@@ -279,19 +279,24 @@ def select_game(request, game_id=None):
         context_dict = {}
         as_cat = (Game.objects.
                   filter(cat_user=request.user).
-                  filter(status=GameStatus.ACTIVE))
+                  filter(status=GameStatus.ACTIVE).
+                  order_by('id'))
         as_mouse = (Game.objects.
                     filter(mouse_user=request.user).
-                    filter(status=GameStatus.ACTIVE))
+                    filter(status=GameStatus.ACTIVE).
+                    order_by('id'))
         join = (Game.objects.
                 exclude(cat_user=request.user).
-                filter(status=GameStatus.CREATED))
+                filter(status=GameStatus.CREATED).
+                order_by('id'))
         replay = ((Game.objects.
                    filter(cat_user=request.user).
-                   filter(status=GameStatus.FINISHED))
+                   filter(status=GameStatus.FINISHED).
+                   order_by('id'))
                   | (Game.objects.
                      filter(mouse_user=request.user).
-                     filter(status=GameStatus.FINISHED)))
+                     filter(status=GameStatus.FINISHED).
+                     order_by('id')))
         paginator_as_cat = Paginator(as_cat, 5)
         paginator_as_mouse = Paginator(as_mouse, 5)
         paginator_join = Paginator(join, 5)
@@ -449,9 +454,9 @@ def get_move(request):
         shift = int(request.POST.get('shift'))
         game = Game.objects.filter(id=request.session["game_selected"])[0]
         movement = request.session.get("replay", 0)
-        max_movements = game.moves.count() -1
+        max_movements = game.moves.count()
 
-        if (movement == 0 and shift == -1) and (shift == 1 and movement == max_movements):
+        if (movement == 0 and shift == -1) or (shift == 1 and movement == max_movements):
             retorno = errorHTTP(request, "Replay not allowed")
             retorno.status_code = 404
             return retorno
@@ -476,7 +481,7 @@ def get_move(request):
         elif shift == 1:
             response_data['target'] = movements[movement].target
             response_data['origin'] = movements[movement].origin
-            if movement == max_movements:
+            if (movement + 1) == max_movements:
                 response_data['next'] = False
             else:
                 response_data['next'] = True
@@ -488,11 +493,30 @@ def get_move(request):
 
 @login_required(login_url='login')
 def refresh(request):
+    """
+    Refreshes the game board.
+
+    Args:
+        request (HttpRequest): Metadata about the requested page
+
+    Returns:
+        retorno (HttpResponseForbidden): Error page
+        response_data (JsonResponse): Json with the information
+
+    Author:
+    """
+    game = Game.objects.filter(id=request.session["game_selected"])[0]
+    response_data = {}
+    response_data['cat_turn'] = game.cat_turn
     try:
-        File_object = open(r"{% static 'templates/mouse_cat/game_ajax.html' %}","r")
-        response_data = File_object.read()
+        File_object = open(r"templates/mouse_cat/game_ajax.html","r")
+        response_data['html'] = File_object.read()
         File_object.close()
     except IOError:
-        response_data = "ERROR: File does not exist."
+        retorno = errorHTTP(request, "ERROR: File does not exist")
+        retorno.status_code = 404
+        return retorno
 
-    return response_data
+    print("\n\nHtml:\n\n" + str(response_data))
+    print(JsonResponse(response_data))
+    return JsonResponse(response_data)

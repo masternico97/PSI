@@ -13,9 +13,13 @@
         <script type="text/javascript" src="{% static 'js/useful.js' %}"></script>
 
         <script>
-            var next;
+            var autoplay, next, previous;
+            function prepareAutoPlay() {
+                document.getElementById("auto").onclick = function() { return; };
+                autoplay = setInterval(function() { replay(0); }, 1000);
+            }
             function replay(s) {
-                var origin, target, previous;
+                let origin, target;
                 if(s != 0) {
                     $.ajax({
                         url: "{% url 'get_move' %}",
@@ -50,7 +54,10 @@
                         }
                     });
                 } else {
-                    sleep(1000);
+                    if (!(next === true || next == null)) {
+                        stopAutoPlay(autoplay, previous, next);
+                        return;
+                    }
                     $.ajax({
                         url: "{% url 'get_move' %}",
                         type: "POST",
@@ -64,21 +71,19 @@
                             previous = data.previous
                             next = data.next
 
-                            document.getElementById(target).innerHTML = document.getElementById(origin).innerHTML;
-                            document.getElementById(origin).innerHTML = "";
-
-                            /* Ocultamos los botones para que no sean clickables mientras dura la ejecución automática */
+                            /* Ocultamos los botones para que no sean clickables mientras dura la ejecución */
+                            /* automática, menos AUTO, al que cambiamos su nombre por STOP, que ahora detendrá */
+                            /* la ejecución del auto replay */
+                            if (document.getElementById("auto").innerHTML == "AUTO") {
+                                document.getElementById("auto").innerHTML = "STOP";
+                                document.getElementById("auto").onclick = function() { stopAutoPlay(autoplay, previous, next); };
+                            }
                             document.getElementById("forward").style.visibility = "hidden";
-                            document.getElementById("auto").style.visibility = "hidden";
                             document.getElementById("preview").style.visibility = "hidden";
                             document.getElementById("replay_end").style.visibility = "hidden";
 
-                            if(next === true){
-                                replay(0);
-                            } else {
-                                document.getElementById("replay_end").style.visibility = "visible";
-                                document.getElementById("preview").style.visibility = "visible";
-                            }
+                            document.getElementById(target).innerHTML = document.getElementById(origin).innerHTML;
+                            document.getElementById(origin).innerHTML = "";
                         }
                     });
                 }
