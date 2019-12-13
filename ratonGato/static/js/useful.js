@@ -24,6 +24,8 @@ function stopAutoPlay(id, prev, next) {
         clearInterval(id);
         document.getElementById("auto").innerHTML = "PLAY";
         document.getElementById("auto").onclick = function() { prepareAutoPlay(); };
+        document.getElementById("forward").onclick = function() { replay(1); };
+        document.getElementById("preview").onclick = function() { replay(-1); };
         if (next === true) {
             document.getElementById("forward").style.visibility = "visible";
         } else {

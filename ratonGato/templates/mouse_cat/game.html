@@ -6,6 +6,7 @@
     <script type="text/javascript">
         var refresh_id;
         function refresh() {
+            console.log("Refreshing...");
             let cat_turn;
             $.ajax({
                 url: "{% url 'refresh' %}",
@@ -35,7 +36,7 @@
             {% endif %}
         }
         // Acabar refresh bien antes de descomentar
-        //refresh_id = setInterval(function() { refresh(); }, 5000);
+        refresh_id = setInterval(function() { refresh(); }, 5000);
     </script>
 {% endif %}
 <div id="content">

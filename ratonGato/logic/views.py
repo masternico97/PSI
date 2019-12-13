@@ -9,6 +9,7 @@ from django.http import HttpResponseForbidden
 from django.http import JsonResponse
 from django.shortcuts import render, redirect, reverse
 from django.db.models import Min
+from django.template.loader import render_to_string
 
 from datamodel import constants
 # Import the models
@@ -505,12 +506,29 @@ def refresh(request):
 
     Author:
     """
-    game = Game.objects.filter(id=request.session["game_selected"])[0]
+    try:
+        game = Game.objects.filter(id=request.session["game_selected"])[0]
+    except KeyError:
+        retorno = errorHTTP(request,
+                            "Not game selected for to refresh")
+        retorno.status_code = 404
+        return retorno
+    context_dict = {}
+    context_dict['request.user.id'] = request.user.id
+    context_dict["game"] = game
+    context_dict["game.cat_user.id"] = game.cat_user.id
+    context_dict["game.mouse_user.id"] = game.mouse_user.id
+    context_dict["game.status"] = game.status
+    context_dict["game.winner"] = game.winner
+    board = [0 for i in range(64)]
+    board[game.cat1] = 1
+    board[game.cat2] = 1
+    board[game.cat3] = 1
+    board[game.cat4] = 1
+    board[game.mouse] = -1
+    context_dict["board"] = board
     response_data = {}
     response_data['cat_turn'] = game.cat_turn
-    # We need to obtain valid html from the render function to introduce it into
-    # response_data['html']
-    test = render(request, "mouse_cat/game_ajax.html", response_data)
-    print(test)
-    return test
-    # return JsonResponse(response_data)
+    response_data['html'] = render_to_string("mouse_cat/game_ajax.html", context=context_dict)
+    print(response_data['html'])
+    return JsonResponse(response_data)

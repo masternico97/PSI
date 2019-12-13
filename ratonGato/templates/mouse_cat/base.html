@@ -16,6 +16,8 @@
             var autoplay, next, previous;
             function prepareAutoPlay() {
                 document.getElementById("auto").onclick = function() { return; };
+                document.getElementById("preview").onclick = function() { return; };
+                document.getElementById("forward").onclick = function() { return; };
                 autoplay = setInterval(function() { replay(0); }, 1000);
             }
             function replay(s) {
