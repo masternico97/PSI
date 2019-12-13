@@ -26,7 +26,7 @@ SECRET_KEY = 'p0)vc(n%46=fywwr9b7s#j(8y@rb=izf!b)p&t)ron2*1l)dzq'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [u'calm-dawn-13078.herokuapp.com', u'127.0.0.1']
+ALLOWED_HOSTS = [u'sleepy-journey-15476.herokuapp.com', u'127.0.0.1']
 
 
 # Application definition
