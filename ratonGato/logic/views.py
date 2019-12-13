@@ -508,47 +508,9 @@ def refresh(request):
     game = Game.objects.filter(id=request.session["game_selected"])[0]
     response_data = {}
     response_data['cat_turn'] = game.cat_turn
-    # Writing the html into a string
-    response_data['html'] = "<table id=\"chess_board\">\n"
-    for i in range(64):
-        print("i: " + str(i) + "\n" + str((i % 8) == 0))
-        if ((i % 8) == 0):
-            print("<tr>")
-            response_data['html'] += "<tr>\n"
-        print("<td></td>");
-        response_data['html'] += "<td id=\"cell_" + str(i) + "\" ondrop=\"drop(event)\" ondragover=\"allowDrop(event)\">\n"
-        response_data['html'] += "<div id=\"blank_cell_" + str(i) + "\" class=\"blank_cell\">\n"
-        if ((i == game.cat1) or (i == game.cat2) or (i == game.cat3) or (i == game.cat4)):
-            response_data['html'] += "<img id=\"duck_hunt_" + str(i) + "\" class=\"draggable\" ondragstart=\"drag(event)\" src=\"static/images/duck_hunt.png\" alt=\"Hound\">\n"
-        elif (i == game.mouse):
-            response_data['html'] += "<img id=\"tails\" class=\"draggable\" ondragstart=\"drag(event)\" src=\"static/images/tails.png\" alt=\"Fox\">"
-        response_data['html'] += "</div>\n</td>\n"
-        if ((i % 8) == 0):
-            print("</tr>")
-            response_data['html'] += "</tr>\n"
-    response_data['html'] += "</table>\n"
-    if (game.cat_user == request.user):
-        response_data['html'] += "<div class=\"content_wrapper\">\n"
-        if (game.status == GameStatus.ACTIVE):
-            response_data['html'] += "<div id=\"wait_message\">"
-            response_data['html'] += "<img src=\"static/images/fox_wait.gif\" alt=\"Fox\">"
-            response_data['html'] += "<br>"
-            response_data['html'] += "<p>The fox is playing, please wait for it.</p>"
-        else:
-            response_data['html'] += "<p id=\"endgame_message_content\">\n"
-            if (game.winner == GameWinner.MOUSE):
-                response_data['html'] += "You lost. Better luck nex time!\n"
-            else:
-                response_data['html'] += "<img src=\"static/images/fireworks.gif\" alt=\"Fireworks\">"
-                response_data['html'] += "You won! Congratulations!\n"
-                response_data['html'] += "<img src=\"static/images/fireworks.gif\" alt=\"Fireworks\">"
-            response_data['html'] += "</p>\n"
-        response_data['html'] += "</div>\n"
-    else:
-        if (game.status == GameStatus.ACTIVE):
-            response_data['html'] += "<form id=\"move_form\" method=\"post\" action=\"move\">"
-
-    # chess_board
-    response_data['html'] += "</div>\n"
-
-    return JsonResponse(response_data)
+    # We need to obtain valid html from the render function to introduce it into
+    # response_data['html']
+    test = render(request, "mouse_cat/game_ajax.html", response_data)
+    print(test)
+    return test
+    # return JsonResponse(response_data)
