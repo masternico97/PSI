@@ -24,7 +24,7 @@ STATIC_DIR = os.path.join(BASE_DIR, 'static')
 SECRET_KEY = 'p0)vc(n%46=fywwr9b7s#j(8y@rb=izf!b)p&t)ron2*1l)dzq'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = [u'rocky-temple-32013.herokuapp.com', u'127.0.0.1']
 

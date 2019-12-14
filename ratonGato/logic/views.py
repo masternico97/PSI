@@ -472,7 +472,6 @@ def get_move(request):
             # and origin the target of our backward movement
             movement -= 1
             request.session["replay"] = movement
-
             response_data['target'] = movements[movement].origin
             response_data['origin'] = movements[movement].target
             if movement == 0:
@@ -534,7 +533,6 @@ def refresh(request):
     context_dict["board"] = board
     response_data = {}
     response_data['cat_turn'] = game.cat_turn
-    print(game.cat_turn)
     response_data['html'] = render_to_string("mouse_cat/game_ajax.html",
                                              context=context_dict,
                                              request=request)
