@@ -1,7 +1,7 @@
 all:
-	@echo "Tags:\n"
-	@echo"start\t\tMakes migrations, migrates, collects static files, and runs server\n"
-	@echo "clean\t\tRemoves .pyc files and staticHeroku folder\n"
+	@echo "Tags:"
+	@echo "start\t\tMakes migrations, migrates, collects static files, and runs server"
+	@echo "clean\t\tRemoves .pyc files and staticHeroku folder"
 	@echo "restart\t\tCleans and starts again"
 
 ####### Constants #######
