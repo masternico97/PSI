@@ -5,7 +5,7 @@
 {% if game.cat_user.id == request.user.id and not game.cat_turn or game.mouse_user.id == request.user.id and game.cat_turn %}
 <!-- Author: Martin Salinas -->
     <script type="text/javascript">
-        var refresh_id, cat_turn;
+        var refresh_id, my_turn;
         function refresh() {
             $.ajax({
                 url: "{% url 'refresh' %}",
@@ -18,8 +18,8 @@
                     // Parse to check if data is an error
                     if (!data['html'].includes('ERROR')) {
                         $("#content").html(data['html']);
-                        cat_turn = data['cat_turn'];
-                        if (data['myturn'] === true) {
+                        my_turn = data['my_turn'];
+                        if (my_turn === true) {
                             ready();
                         }
                     } else {
@@ -27,15 +27,9 @@
                     }
                 }
             });
-            {% if game.cat_user.id == request.user.id %}
-                if (cat_turn === true) {
-                    stopRefresh(refresh_id);
-                }
-            {% else %}
-                if (cat_turn === false) {
-                    stopRefresh(refresh_id);
-                }
-            {% endif %}
+            if (my_turn === true) {
+                stopRefresh(refresh_id);
+            }
         }
         refresh_id = setInterval(function() { refresh(); }, 500);
     </script>

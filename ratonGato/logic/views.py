@@ -124,6 +124,7 @@ def signup(request):
                     "counter_global": Counter.objects.get_current_value()}
     # The request is not a HTTP POST, so display the login form.
     if request.method == 'POST' and context_dict["user_form"].is_valid():
+        password_min_lenght = 6
         data = context_dict["user_form"].clean()
         username = data['username']
         password = data['password']
@@ -131,24 +132,20 @@ def signup(request):
 
         if password != password2:
             context_dict["user_form"].add_error("username",
-                                                "Password and Repeat " +
-                                                "password are not the same")
+                                                "Passwords do not match")
 
-        elif len(password) < 6:
-            context_dict["user_form"].add_error("username", "(?=.*too short)" +
-                                                "(?=.*at least" +
-                                                " 6 characters)" +
-                                                "(?=.*too common)")
+        elif len(password) < password_min_lenght:
+            context_dict["user_form"].add_error("username", "Password needs " +
+                                                "to be at least " +
+                                                str(password_min_lenght) +
+                                                " characters long")
         else:
             try:
                 User.objects.get(username=username)
                 context_dict["user_form"].add_error("username",
                                                     "A user with " +
-                                                    "that username" +
-                                                    " already exists" +
-                                                    "Username:" + username +
-                                                    "Password:" + password +
-                                                    "Password 2:" + password2)
+                                                    "that name" +
+                                                    " already exists")
             except User.DoesNotExist:
                 user = User.objects.create_user(username=username,
                                                 password=password)
@@ -532,14 +529,13 @@ def refresh(request):
     board[game.mouse] = -1
     context_dict["board"] = board
     response_data = {}
-    response_data['cat_turn'] = game.cat_turn
     response_data['html'] = render_to_string("mouse_cat/game_ajax.html",
                                              context=context_dict,
                                              request=request)
     if (((game.cat_user.id == request.user.id) and
         (game.cat_turn)) or ((game.mouse_user.id == request.user.id) and
                              (game.cat_turn is False))):
-        response_data['myturn'] = True
+        response_data['my_turn'] = True
     else:
-        response_data['myturn'] = False
+        response_data['my_turn'] = False
     return JsonResponse(response_data)

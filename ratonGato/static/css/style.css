@@ -84,6 +84,11 @@ nav > p {
     text-align: center;
 }
 
+/* To avoid default list padding so error messages are centered */
+ul.errorlist {
+    padding-left: 0px;
+}
+
 /* List of available games to select */
 #content li {
     list-style-type: none;

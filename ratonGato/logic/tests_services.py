@@ -1,7 +1,7 @@
 """
 @author: rlatorre
 
-ChangeLog: 
+ChangeLog:
 2019 Nov 8 (@author rmarabini): change TestCase by TransactionTestCase
 When runing the test, TestCase creates a transaction and all test code are now under a "transaction block". At the end of the test, TestCase will rollback all things to keep your DB clean. When using  posgres as database AND accesing functions that require login without login in first, the database connection is disconected and the rollback fails producing different errors in the code. TransactionTestCase instead of using a rollback deletes the tables are recreates them. This is an slower approach but more robust.
 """
@@ -101,15 +101,15 @@ SERVICE_DEF = {
     },
     SIGNUP_ERROR_PASSWORD: {
         "title": SIGNUP_TITLE,
-        "pattern": r"Password and Repeat password are not the same|La clave y su repetición no coinciden"
+        "pattern": r"Passwords do not match|Las contraseñas no coinciden"
     },
     SIGNUP_ERROR_USER: {
         "title": SIGNUP_TITLE,
-        "pattern": r"A user with that username already exists|Usuario duplicado"
+        "pattern": r"A user with that name already exists|Usuario duplicado"
     },
     SIGNUP_ERROR_AUTH_PASSWORD: {
         "title": SIGNUP_TITLE,
-        "pattern": r"(?=.*too short)(?=.*at least 6 characters)(?=.*too common)"
+        "pattern": r"Password needs to be at least 6 characters long"
     },
     COUNTER_SESSION_VALUE: {
         "title": COUNTER_TITLE,
